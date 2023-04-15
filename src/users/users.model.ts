@@ -50,12 +50,6 @@ export class User extends Model<User, IUserCreationAttributes> {
   @UpdatedAt
   updated_at: Date
 
-  // @ForeignKey(() => Board)
-  // @Column({ type: DataType.INTEGER })
-  // main_board_id: number;
-
   @HasMany(() => Board)
   boards: Board[]
-  // @BelongsToMany(() => Board, () => UserBoards)
-  // boards: Board[];
 }

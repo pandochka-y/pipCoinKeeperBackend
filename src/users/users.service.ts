@@ -10,19 +10,11 @@ export class UsersService {
   constructor(@InjectModel(User) private userRepository: typeof User) {
   }
 
-  getUsers() {
-    return 'Hello World!'
-  }
-
   async getAllUsers() {
-    const users = await this.userRepository.findAll()
-    return users
+    return await this.userRepository.findAll()
   }
 
   async createUser(dto: CreateUserWebDto | CreateUserTelegramDto) {
-    console.log('user', dto)
-    const user = await this.userRepository.create(dto)
-    console.log(user)
-    return user
+    return await this.userRepository.create(dto)
   }
 }
