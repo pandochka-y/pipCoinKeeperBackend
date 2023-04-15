@@ -8,6 +8,8 @@ import { BoardController } from './board/board.controller'
 import { BoardService } from './board/board.service'
 import { BoardModule } from './board/board.module'
 import { Board } from './board/board.model'
+import { CurrencyModule } from './currency/currency.module'
+import { Currency } from './currency/currency.model'
 
 @Module({
   imports: [
@@ -20,10 +22,11 @@ import { Board } from './board/board.model'
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       autoLoadModels: true,
-      models: [User, Board],
+      models: [User, Board, Currency],
     }),
     UsersModule,
     BoardModule,
+    CurrencyModule,
   ],
   controllers: [BoardController],
   providers: [BoardService],

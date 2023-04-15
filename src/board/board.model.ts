@@ -2,6 +2,7 @@ import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, Model, Table, Updat
 import { ApiProperty } from '@nestjs/swagger'
 
 import { User } from '../users/users.model'
+import { Currency } from '../currency/currency.model'
 
 interface IBoardCreationAttributes {
   user_id: string
@@ -21,6 +22,7 @@ export class Board extends Model<Board, IBoardCreationAttributes> {
   amount_limit: number
 
   @ApiProperty({ example: '21', description: 'current currency', readOnly: true })
+  @ForeignKey(() => Currency)
   @Column({ type: DataType.INTEGER })
   currency_id: number
 

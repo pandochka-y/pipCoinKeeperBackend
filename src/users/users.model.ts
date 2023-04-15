@@ -11,8 +11,8 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Board } from '../board/board.model'
 
 interface IUserCreationAttributesWeb {
-  email?: string
-  password?: string
+  email: string
+  password: string
 }
 
 interface IUserCreationAttributesTelegram {
