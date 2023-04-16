@@ -4,8 +4,6 @@ import { SequelizeModule } from '@nestjs/sequelize'
 
 import { UsersModule } from './users/users.module'
 import { User } from './users/users.model'
-import { BoardController } from './board/board.controller'
-import { BoardService } from './board/board.service'
 import { BoardModule } from './board/board.module'
 import { Board } from './board/board.model'
 import { CurrencyModule } from './currency/currency.module'
@@ -28,10 +26,6 @@ import { Currency } from './currency/currency.model'
     BoardModule,
     CurrencyModule,
   ],
-  controllers: [BoardController],
-  providers: [BoardService],
 })
 export class AppModule {
-  constructor() {
-  }
 }

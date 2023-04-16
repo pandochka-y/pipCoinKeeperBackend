@@ -11,7 +11,6 @@ import { Board } from './board.model'
   providers: [BoardService],
   controllers: [BoardController],
   imports: [SequelizeModule.forFeature([Board, User])],
-  exports: [BoardService],
 })
 export class BoardModule {
 }
