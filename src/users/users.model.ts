@@ -41,7 +41,7 @@ export class User extends Model<User, IUserCreationAttributes> {
   role: string
 
   @ApiProperty({ example: '21939129312', description: 'telegram id from bot' })
-  @Column({ type: DataType.INTEGER, allowNull: true })
+  @Column({ type: DataType.INTEGER })
   telegram_id: number
 
   @CreatedAt

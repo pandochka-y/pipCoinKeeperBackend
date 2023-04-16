@@ -13,6 +13,7 @@ import { User } from './users.model'
   imports: [
     SequelizeModule.forFeature([User, Board]),
   ],
+  exports: [UsersService],
 })
 export class UsersModule {
 }

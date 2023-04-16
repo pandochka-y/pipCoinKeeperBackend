@@ -1,11 +1,11 @@
-import { Column, CreatedAt, DataType, Model, Table, UpdatedAt } from 'sequelize-typescript'
+import { Column, DataType, Model, Table } from 'sequelize-typescript'
 import { ApiProperty } from '@nestjs/swagger'
 
 interface ICurrencyCreationAttributes {
   code: string
 }
 
-@Table({ tableName: 'currency' })
+@Table({ tableName: 'currency', updatedAt: false, createdAt: false })
 
 export class Currency extends Model<Currency, ICurrencyCreationAttributes> {
   @ApiProperty({ example: '123', description: 'currency id', readOnly: true })
@@ -16,9 +16,9 @@ export class Currency extends Model<Currency, ICurrencyCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   code: string
 
-  @CreatedAt
-  registered_at: Date
-
-  @UpdatedAt
-  updated_at: Date
+  // @CreatedAt
+  // registered_at: Date
+  //
+  // @UpdatedAt
+  // updated_at: Date
 }

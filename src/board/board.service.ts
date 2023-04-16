@@ -2,17 +2,22 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 
 import { Board } from './board.model'
+import { CreateBoardDto } from './dto/create-board.dto'
 
 @Injectable()
 export class BoardService {
   constructor(@InjectModel(Board) private boardRepository: typeof Board) {
   }
 
-  createBoard() {
-    return 'This action adds a new board'
+  async createBoard(boardDto: CreateBoardDto) {
+    return await this.boardRepository.create(boardDto)
   }
 
-  getAllBoards() {
-    return 'This action returns all board'
+  async getBoardById(id: number) {
+    return await this.boardRepository.findOne({ where: { id }, include: { all: true } })
+  }
+
+  async getBoardAll() {
+    return await this.boardRepository.findAll()
   }
 }

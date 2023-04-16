@@ -8,6 +8,7 @@ import { BoardModule } from './board/board.module'
 import { Board } from './board/board.model'
 import { CurrencyModule } from './currency/currency.module'
 import { Currency } from './currency/currency.model'
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { Currency } from './currency/currency.model'
     UsersModule,
     BoardModule,
     CurrencyModule,
+    AuthModule,
   ],
 })
 export class AppModule {

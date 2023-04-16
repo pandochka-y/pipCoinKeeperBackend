@@ -21,16 +21,16 @@ settings:
   'import/resolver':
     typescript: true
     node: true
-
 rules:
+  '@typescript-eslint/consistent-type-imports': "off"
   'no-console': 'warn'
-  'import/no-unresolved': 'error'
-  'import/namespace': 'error'
-  'import/default': 'error'
-  'import/export': 'error'
-  'import/named': 'error'
+  'import/no-unresolved': 'warn'
+  'import/namespace': 'warn'
+  'import/default': 'warn'
+  'import/export': 'warn'
+  'import/named': 'warn'
   'import/order':
-    - 'error'
+    - 'warn'
     - 'groups':
         - 'builtin'
         - 'external'

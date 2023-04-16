@@ -16,4 +16,12 @@ export class UsersService {
   async createUser(dto: CreateUserWebDto | CreateUserTelegramDto) {
     return await this.userRepository.create(dto)
   }
+
+  async getUserByTelegramId(id: number) {
+    return await this.userRepository.findOne({ where: { telegram_id: id } })
+  }
+
+  async getUserByEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email } })
+  }
 }
