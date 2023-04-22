@@ -2,14 +2,21 @@ import { ConfigModule } from '@nestjs/config'
 import { Module } from '@nestjs/common'
 import { SequelizeModule } from '@nestjs/sequelize'
 
-import { UsersModule } from './users/users.module'
-import { User } from './users/users.model'
-import { BoardModule } from './board/board.module'
-import { Board } from './board/board.model'
-import { CurrencyModule } from './currency/currency.module'
-import { Currency } from './currency/currency.model'
-import { AuthModule } from './auth/auth.module';
-import { CategoriesModule } from './categories/categories.module';
+import { UsersModule } from './module/users/users.module'
+import { User } from './module/users/users.model'
+import { BoardModule } from './module/board/board.module'
+import { Board } from './module/board/board.model'
+import { CurrencyModule } from './module/currency/currency.module'
+import { Currency } from './module/currency/currency.model'
+import { AuthModule } from './module/auth/auth.module'
+import { CategoriesModule } from './module/categories/categories.module'
+import { MerchantCodeModule } from './module/merchant-code/merchant-code.module'
+import { MerchantCode } from './module/merchant-code/merchant-code.model'
+import { CategoryMC } from './module/categories/categories-mc.model'
+import { Category } from './module/categories/categories.model'
+import { MembersModule } from './module/members/members.module'
+import { TransactionsModule } from './module/transactions/transactions.module'
+import { Member } from './module/members/members.model'
 
 @Module({
   imports: [
@@ -22,13 +29,16 @@ import { CategoriesModule } from './categories/categories.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       autoLoadModels: true,
-      models: [User, Board, Currency],
+      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, Member],
     }),
     UsersModule,
     BoardModule,
     CurrencyModule,
     AuthModule,
     CategoriesModule,
+    MerchantCodeModule,
+    MembersModule,
+    TransactionsModule,
   ],
 })
 export class AppModule {

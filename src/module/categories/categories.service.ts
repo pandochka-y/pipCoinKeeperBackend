@@ -12,14 +12,13 @@ export class CategoriesService {
     return await this.categoryService.create({ name: dto.name, board_id: dto.board_id })
   }
 
-  async getAllBoardCategories(id: number) {
+  async getAllBoardCategories(board_id: number) {
     return await this.categoryService.findAll({
       where: {
         board_id: {
-          [Op.or]: [id, null],
+          [Op.or]: [board_id, null],
         },
       },
-      include: { all: true },
     })
   }
 

@@ -9,6 +9,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger'
 
 import { Board } from '../board/board.model'
+import { Member } from '../members/members.model'
 
 interface IUserCreationAttributesWeb {
   email: string
@@ -44,12 +45,15 @@ export class User extends Model<User, IUserCreationAttributes> {
   @Column({ type: DataType.INTEGER })
   telegram_id: number
 
+  @HasMany(() => Board)
+  boards: Board[]
+
+  @HasMany(() => Member)
+  member_boards: Member[]
+
   @CreatedAt
   registered_at: Date
 
   @UpdatedAt
   updated_at: Date
-
-  @HasMany(() => Board)
-  boards: Board[]
 }

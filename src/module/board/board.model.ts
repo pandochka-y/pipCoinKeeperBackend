@@ -1,8 +1,19 @@
-import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, Model, Table, UpdatedAt } from 'sequelize-typescript'
+import {
+  BelongsTo,
+  Column,
+  CreatedAt,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+  UpdatedAt,
+} from 'sequelize-typescript'
 import { ApiProperty } from '@nestjs/swagger'
 
 import { User } from '../users/users.model'
 import { Currency } from '../currency/currency.model'
+import { Member } from '../members/members.model'
 
 interface IBoardCreationAttributes {
   user_id: string
@@ -26,12 +37,18 @@ export class Board extends Model<Board, IBoardCreationAttributes> {
   @Column({ type: DataType.INTEGER })
   currency_id: number
 
-  @BelongsTo(() => User)
-  user: User
+  @BelongsTo(() => Currency)
+  currency: Currency
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false })
   user_id: number
+
+  @BelongsTo(() => User)
+  creator: User
+
+  @HasMany(() => Member)
+  members: Member[]
 
   @CreatedAt
   registered_at: Date
