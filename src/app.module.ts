@@ -17,6 +17,7 @@ import { Category } from './module/categories/categories.model'
 import { MembersModule } from './module/members/members.module'
 import { TransactionsModule } from './module/transactions/transactions.module'
 import { Member } from './module/members/members.model'
+import { Transaction } from './module/transactions/transactions.model'
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { Member } from './module/members/members.model'
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       autoLoadModels: true,
-      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, Member],
+      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, Member, Transaction],
     }),
     UsersModule,
     BoardModule,

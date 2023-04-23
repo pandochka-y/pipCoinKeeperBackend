@@ -8,20 +8,22 @@ interface IBoardCreationAttributes {
   user_id: string
 }
 
-@Table({ tableName: 'boards' })
+@Table({ tableName: 'members' })
 
 export class Member extends Model<Member, IBoardCreationAttributes> {
   @ApiProperty({ example: '123', description: 'member id', readOnly: true })
   @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
   id: number
 
+  @ApiProperty({ example: '123', description: 'Board id' })
   @ForeignKey(() => Board)
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   board_id: number
 
   @BelongsTo(() => Board)
   board: Board
 
+  @ApiProperty({ example: '123', description: 'User id' })
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false })
   user_id: number

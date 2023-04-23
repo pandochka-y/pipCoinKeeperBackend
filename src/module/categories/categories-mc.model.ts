@@ -1,4 +1,4 @@
-import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript'
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript'
 
 import { MerchantCode } from '../merchant-code/merchant-code.model'
 
@@ -14,7 +14,13 @@ export class CategoryMC extends Model<CategoryMC> {
   @Column({ type: DataType.INTEGER })
   category_id: number
 
+  @BelongsTo(() => Category)
+  category: Category
+
   @ForeignKey(() => MerchantCode)
   @Column({ type: DataType.INTEGER })
-  mcc_id: number
+  merchant_code_id: number
+
+  @BelongsTo(() => MerchantCode)
+  merchant_code: MerchantCode
 }
