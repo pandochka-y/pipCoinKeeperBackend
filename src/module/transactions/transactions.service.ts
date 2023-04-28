@@ -11,14 +11,18 @@ export class TransactionsService {
   }
 
   async createTransaction(transaction: CreateTransactionDto): Promise<Transaction> {
-    return this.transactionRepository.create(transaction)
+    return await this.transactionRepository.create(transaction)
   }
 
-  async getTransactions(boardId: number, query: GetTransactionDto): Promise<Transaction[]> {
-    return this.transactionRepository.findAll({ where: { board_id: boardId } })
-  }
+  async getAllBoardTransactions(board_id: number, query: GetTransactionDto): Promise<Transaction[]> {
+    const where = Object.keys(query).reduce((acc, key) => {
+      if (query[key] && GetTransactionDto[key])
+        acc[key] = query[key]
 
-  async getTransactionsByUserId(userId: number): Promise<Transaction[]> {
-    return this.transactionRepository.findAll({ where: { user_id: userId } })
+      return acc
+    }, {
+      board_id,
+    })
+    return await this.transactionRepository.findAll({ where: { ...where } })
   }
 }

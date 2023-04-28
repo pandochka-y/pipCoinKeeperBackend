@@ -9,7 +9,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger'
 
 import { Board } from '../board/board.model'
-import { Member } from '../members/members.model'
+import { BoardUser } from '../board-users/board-users.model'
 
 interface IUserCreationAttributesWeb {
   email: string
@@ -28,6 +28,10 @@ export class User extends Model<User, IUserCreationAttributes> {
   @ApiProperty({ example: '123', description: 'user id', readOnly: true })
   @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
   id: number
+
+  @ApiProperty({ example: 'Stepan', description: 'user name' })
+  @Column({ type: DataType.STRING, defaultValue: 'User' })
+  name: string
 
   @ApiProperty({ example: 'example@example.com', description: 'Unique email' })
   @Column({ type: DataType.STRING, unique: true, allowNull: true })
@@ -48,8 +52,8 @@ export class User extends Model<User, IUserCreationAttributes> {
   @HasMany(() => Board)
   boards: Board[]
 
-  @HasMany(() => Member)
-  member_boards: Member[]
+  @HasMany(() => BoardUser)
+  member_boards: BoardUser[]
 
   @CreatedAt
   registered_at: Date

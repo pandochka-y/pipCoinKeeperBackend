@@ -13,7 +13,7 @@ import { ApiProperty } from '@nestjs/swagger'
 
 import { User } from '../users/users.model'
 import { Currency } from '../currency/currency.model'
-import { Member } from '../members/members.model'
+import { BoardUser } from '../board-users/board-users.model'
 
 interface IBoardCreationAttributes {
   user_id: string
@@ -47,11 +47,11 @@ export class Board extends Model<Board, IBoardCreationAttributes> {
   @BelongsTo(() => User)
   creator: User
 
-  @HasMany(() => Member)
-  members: Member[]
+  @HasMany(() => BoardUser)
+  board_users: BoardUser[]
 
   @CreatedAt
-  registered_at: Date
+  created_at: Date
 
   @UpdatedAt
   updated_at: Date

@@ -14,10 +14,11 @@ import { MerchantCodeModule } from './module/merchant-code/merchant-code.module'
 import { MerchantCode } from './module/merchant-code/merchant-code.model'
 import { CategoryMC } from './module/categories/categories-mc.model'
 import { Category } from './module/categories/categories.model'
-import { MembersModule } from './module/members/members.module'
+import { BoardUsersModule } from './module/board-users/board-users.module'
 import { TransactionsModule } from './module/transactions/transactions.module'
-import { Member } from './module/members/members.model'
+import { BoardUser } from './module/board-users/board-users.model'
 import { Transaction } from './module/transactions/transactions.model'
+import { RolesModule } from './module/roles/roles.module'
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { Transaction } from './module/transactions/transactions.model'
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       autoLoadModels: true,
-      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, Member, Transaction],
+      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, BoardUser, Transaction],
     }),
     UsersModule,
     BoardModule,
@@ -38,8 +39,9 @@ import { Transaction } from './module/transactions/transactions.model'
     AuthModule,
     CategoriesModule,
     MerchantCodeModule,
-    MembersModule,
+    BoardUsersModule,
     TransactionsModule,
+    RolesModule,
   ],
 })
 export class AppModule {

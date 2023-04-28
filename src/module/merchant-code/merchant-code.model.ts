@@ -8,7 +8,7 @@ interface IMerchantCategoryCreationAttributes {
   code: number
 }
 
-@Table({ tableName: 'merchant-code', updatedAt: false, createdAt: false })
+@Table({ tableName: 'merchant_code', updatedAt: false, createdAt: false })
 
 export class MerchantCode extends Model<MerchantCode, IMerchantCategoryCreationAttributes> {
   @ApiProperty({ example: '123', description: 'merchant-code id', readOnly: true })

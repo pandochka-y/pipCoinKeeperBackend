@@ -10,11 +10,10 @@ import {
 } from 'sequelize-typescript'
 import { ApiProperty } from '@nestjs/swagger'
 
-import { User } from '../users/users.model'
 import { Board } from '../board/board.model'
 import { Currency } from '../currency/currency.model'
-import { MerchantCode } from '../merchant-code/merchant-code.model'
 import { Category } from '../categories/categories.model'
+import { BoardUser } from '../board-users/board-users.model'
 
 interface ITransactionCreationAttributes {
   user_id: number
@@ -41,12 +40,12 @@ export class Transaction extends Model<Transaction, ITransactionCreationAttribut
   board: Board
 
   @ApiProperty({ example: '123', description: 'User id' })
-  @ForeignKey(() => User)
+  @ForeignKey(() => BoardUser)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  user_id: number
+  board_user_id: number
 
-  @BelongsTo(() => User)
-  user: User
+  @BelongsTo(() => BoardUser)
+  member: BoardUser
 
   @ApiProperty({ example: '123', description: 'Category id' })
   @ForeignKey(() => Category)
@@ -55,14 +54,6 @@ export class Transaction extends Model<Transaction, ITransactionCreationAttribut
 
   @BelongsTo(() => Category)
   category: Category
-
-  @ApiProperty({ example: '123', description: 'MCC id' })
-  @ForeignKey(() => MerchantCode)
-  @Column({ type: DataType.INTEGER })
-  merchant_code: number
-
-  @BelongsTo(() => MerchantCode)
-  merchant: MerchantCode
 
   @ApiProperty({ example: 190, description: 'Amount of transaction' })
   @Column({ type: DataType.INTEGER, defaultValue: 0 })
@@ -77,7 +68,7 @@ export class Transaction extends Model<Transaction, ITransactionCreationAttribut
   currency: Currency
 
   @CreatedAt
-  added_at: Date
+  created_at: Date
 
   @UpdatedAt
   updated_at: Date

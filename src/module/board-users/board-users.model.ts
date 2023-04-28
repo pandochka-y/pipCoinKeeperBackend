@@ -3,14 +3,17 @@ import { ApiProperty } from '@nestjs/swagger'
 
 import { User } from '../users/users.model'
 import { Board } from '../board/board.model'
+import { Role } from '../roles/roles.model'
 
 interface IBoardCreationAttributes {
-  user_id: string
+  user_id: number
+  board_id: number
+  role_id: number
 }
 
-@Table({ tableName: 'members' })
+@Table({ tableName: 'board_users' })
 
-export class Member extends Model<Member, IBoardCreationAttributes> {
+export class BoardUser extends Model<BoardUser, IBoardCreationAttributes> {
   @ApiProperty({ example: '123', description: 'member id', readOnly: true })
   @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
   id: number
@@ -31,9 +34,13 @@ export class Member extends Model<Member, IBoardCreationAttributes> {
   @BelongsTo(() => User)
   user: User
 
+  @ForeignKey(() => Role)
   @ApiProperty({ example: 'admin', description: 'role' })
-  @Column({ type: DataType.STRING, allowNull: false, defaultValue: 'member' })
-  role: string
+  @Column({ type: DataType.INTEGER, allowNull: false, defaultValue: 1 })
+  role_id: number
+
+  @BelongsTo(() => Role)
+  role: Role
 
   @CreatedAt
   added_at: Date

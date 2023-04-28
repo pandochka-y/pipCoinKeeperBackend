@@ -4,7 +4,6 @@ import { SequelizeModule } from '@nestjs/sequelize'
 import { Board } from '../board/board.model'
 import { User } from '../users/users.model'
 import { Category } from '../categories/categories.model'
-import { MerchantCode } from '../merchant-code/merchant-code.model'
 import { Currency } from '../currency/currency.model'
 
 import { TransactionsService } from './transactions.service'
@@ -15,7 +14,7 @@ import { Transaction } from './transactions.model'
   providers: [TransactionsService],
   controllers: [TransactionsController],
   imports: [
-    SequelizeModule.forFeature([Transaction, User, Board, Category, MerchantCode, Currency]),
+    SequelizeModule.forFeature([Transaction, User, Board, Category, Currency]),
   ],
 })
 export class TransactionsModule {}

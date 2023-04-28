@@ -49,13 +49,13 @@ export class Category extends Model<Category, ICategoryCreationAttributes> {
   user: User
 
   @BelongsToMany(() => MerchantCode, () => CategoryMC)
-  mcc: MerchantCode[]
+  merchant_codes: MerchantCode[]
 
   @HasMany(() => Transaction)
   transactions: Transaction[]
 
   @CreatedAt
-  added_at: Date
+  created_at: Date
 
   @UpdatedAt
   updated_at: Date
