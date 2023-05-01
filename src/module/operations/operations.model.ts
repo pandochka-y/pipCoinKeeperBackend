@@ -15,7 +15,7 @@ import { Currency } from '../currency/currency.model'
 import { Category } from '../categories/categories.model'
 import { BoardUser } from '../board-users/board-users.model'
 
-interface ITransactionCreationAttributes {
+interface IOperationCreationAttributes {
   user_id: number
   board_id: number
   category_id?: number
@@ -26,7 +26,7 @@ interface ITransactionCreationAttributes {
 
 @Table({ tableName: 'members' })
 
-export class Transaction extends Model<Transaction, ITransactionCreationAttributes> {
+export class Operation extends Model<Operation, IOperationCreationAttributes> {
   @ApiProperty({ example: '123', description: 'transaction id', readOnly: true })
   @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
   id: number
@@ -45,7 +45,7 @@ export class Transaction extends Model<Transaction, ITransactionCreationAttribut
   board_user_id: number
 
   @BelongsTo(() => BoardUser)
-  member: BoardUser
+  board_user: BoardUser
 
   @ApiProperty({ example: '123', description: 'Category id' })
   @ForeignKey(() => Category)

@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { BoardService } from './board.service'
 import { Board } from './board.model'
 import { CreateBoardDto } from './dto/create-board.dto'
+import { GetQueryBoardsDto } from './dto/get-query-boards.dto'
 
 @ApiTags('Boards')
 @Controller('boards')
@@ -28,7 +29,7 @@ export class BoardController {
   @ApiOperation({ summary: 'Get all boards' })
   @ApiResponse({ status: 200, type: [Board] })
   @Get()
-  getBoardAll() {
-    return this.boardService.getBoardAll()
+  getAllBoardsByUser(@Query() query: GetQueryBoardsDto) {
+    return this.boardService.getAllBoardsByUser(query)
   }
 }

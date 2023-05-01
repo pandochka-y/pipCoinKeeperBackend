@@ -23,9 +23,7 @@ interface IUserCreationAttributesTelegram {
 type IUserCreationAttributes = IUserCreationAttributesWeb | IUserCreationAttributesTelegram
 
 @Table({ tableName: 'users' })
-
 export class User extends Model<User, IUserCreationAttributes> {
-  @ApiProperty({ example: '123', description: 'user id', readOnly: true })
   @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
   id: number
 

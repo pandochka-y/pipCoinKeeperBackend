@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
-import { ApiOperation, ApiProperty, ApiResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { RolesService } from './roles.service'
 import { CreateRoleDto } from './dto/create-role.dto'
 import { Role } from './roles.model'
 
+@ApiTags('Roles')
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {
@@ -19,7 +20,7 @@ export class RolesController {
 
   @ApiOperation({ summary: 'Get all roles' })
   @ApiResponse({ status: 200, type: [Role] })
-  @Get('/all')
+  @Get()
   getAllRoles() {
     return this.rolesService.getAllRoles()
   }

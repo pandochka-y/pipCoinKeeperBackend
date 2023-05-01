@@ -15,10 +15,11 @@ import { MerchantCode } from './module/merchant-code/merchant-code.model'
 import { CategoryMC } from './module/categories/categories-mc.model'
 import { Category } from './module/categories/categories.model'
 import { BoardUsersModule } from './module/board-users/board-users.module'
-import { TransactionsModule } from './module/transactions/transactions.module'
+import { OperationsModule } from './module/operations/operations.module'
 import { BoardUser } from './module/board-users/board-users.model'
-import { Transaction } from './module/transactions/transactions.model'
+import { Operation } from './module/operations/operations.model'
 import { RolesModule } from './module/roles/roles.module'
+import { Role } from './module/roles/roles.model'
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { RolesModule } from './module/roles/roles.module'
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       autoLoadModels: true,
-      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, BoardUser, Transaction],
+      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, BoardUser, Operation, Role],
     }),
     UsersModule,
     BoardModule,
@@ -40,7 +41,7 @@ import { RolesModule } from './module/roles/roles.module'
     CategoriesModule,
     MerchantCodeModule,
     BoardUsersModule,
-    TransactionsModule,
+    OperationsModule,
     RolesModule,
   ],
 })

@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { ValidationPipe } from '@nestjs/common'
 
 import { AppModule } from './app.module'
 
@@ -13,11 +14,18 @@ async function bootstrap() {
     .setVersion('0.0.1')
     .build()
 
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,
+    transformOptions: { enableImplicitConversion: true },
+  }))
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('/api/docs', app, document)
 
   await app.listen(PORT, () => {
-    return console.log(`Server is running on http://localhost:${PORT}`)
+    const url = `http://localhost:${PORT}`
+    console.log(`Server: http://localhost:${PORT}`)
+    console.log(`Swagger: ${url}/api/docs`)
   })
 }
 

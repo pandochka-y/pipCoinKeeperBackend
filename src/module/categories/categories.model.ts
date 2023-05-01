@@ -13,7 +13,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Board } from '../board/board.model'
 import { User } from '../users/users.model'
 import { MerchantCode } from '../merchant-code/merchant-code.model'
-import { Transaction } from '../transactions/transactions.model'
+import { Operation } from '../operations/operations.model'
 
 import { CategoryMC } from './categories-mc.model'
 
@@ -51,8 +51,8 @@ export class Category extends Model<Category, ICategoryCreationAttributes> {
   @BelongsToMany(() => MerchantCode, () => CategoryMC)
   merchant_codes: MerchantCode[]
 
-  @HasMany(() => Transaction)
-  transactions: Transaction[]
+  @HasMany(() => Operation)
+  transactions: Operation[]
 
   @CreatedAt
   created_at: Date

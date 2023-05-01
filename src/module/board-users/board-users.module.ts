@@ -15,5 +15,6 @@ import { BoardUser } from './board-users.model'
   imports: [
     SequelizeModule.forFeature([BoardUser, User, Board, Role]),
   ],
+  exports: [BoardUsersService],
 })
 export class BoardUsersModule {}

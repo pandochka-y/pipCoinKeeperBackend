@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize'
 import { Op } from 'sequelize'
 
 import { Category } from './categories.model'
+import { CreateCategoryDto } from './dto/create-category.dto'
 
 @Injectable()
 export class CategoriesService {

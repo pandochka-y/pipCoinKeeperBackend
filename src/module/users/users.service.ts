@@ -3,18 +3,18 @@ import { InjectModel } from '@nestjs/sequelize'
 
 import { User } from './users.model'
 
-import type { CreateUserTelegramDto, CreateUserWebDto } from './dto/create-user.dto'
+import type { CreateUserWebDto } from './dto/create-user.dto'
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User) private userRepository: typeof User) {}
 
-  async getAllUsers() {
-    return await this.userRepository.findAll()
+  async createUser(dto: CreateUserWebDto) {
+    return await this.userRepository.create(dto)
   }
 
-  async createUser(dto: CreateUserWebDto | CreateUserTelegramDto) {
-    return await this.userRepository.create(dto)
+  async getAllUsers() {
+    return await this.userRepository.findAll()
   }
 
   async getUserByTelegramId(id: number) {

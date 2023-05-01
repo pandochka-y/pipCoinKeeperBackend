@@ -1,12 +1,13 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
-import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { Currency } from '../currency/currency.model'
 
 import { MerchantCategoryService } from './merchant-code.service'
 import { CreateMerchantCodeDto } from './dto/create-merchant-code.dto'
 
-@Controller('mcc')
+@ApiTags('Merchant Code')
+@Controller('merchant-code')
 export class MerchantCodeController {
   constructor(private readonly merchantCategoryService: MerchantCategoryService) {
   }
@@ -28,7 +29,7 @@ export class MerchantCodeController {
   @ApiOperation({ summary: 'Create merchant category' })
   @ApiResponse({ type: Currency })
   @Post()
-  createCurrency(@Body() code: CreateMerchantCodeDto) {
+  createMerchantCode(@Body() code: CreateMerchantCodeDto) {
     return this.merchantCategoryService.createMerchantCode(code)
   }
 }

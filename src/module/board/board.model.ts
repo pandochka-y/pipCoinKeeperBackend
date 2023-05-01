@@ -16,19 +16,18 @@ import { Currency } from '../currency/currency.model'
 import { BoardUser } from '../board-users/board-users.model'
 
 interface IBoardCreationAttributes {
-  user_id: string
-  amount_limit?: string
-  currency_id: string
+  user_id: number
+  amount_limit?: number
+  currency_id: number
 }
 
 @Table({ tableName: 'boards' })
 
 export class Board extends Model<Board, IBoardCreationAttributes> {
-  @ApiProperty({ example: '123', description: 'board id', readOnly: true })
   @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
   id: number
 
-  @ApiProperty({ example: '19999', description: 'amount' })
+  @ApiProperty({ example: '19999', description: 'amount limit' })
   @Column({ type: DataType.INTEGER, allowNull: true })
   amount_limit: number
 
