@@ -2,9 +2,9 @@ import { ExtraEditMessageText } from 'telegraf/typings/telegram-types'
 
 import { CreateUserTelegramDto } from '../users/dto/create-user.dto'
 
-import { MySceneContext, MyWizardContext } from './bot.interface'
+import { MyContext } from './bot.interface'
 
-export function createUserDtoFactory(ctx: MySceneContext): CreateUserTelegramDto {
+export function createUserDtoFactory(ctx: MyContext): CreateUserTelegramDto {
   return {
     telegram_id: ctx.from.id,
     first_name: ctx.from.first_name,
@@ -13,7 +13,7 @@ export function createUserDtoFactory(ctx: MySceneContext): CreateUserTelegramDto
 }
 
 export async function replyOrEdit(
-  ctx: MySceneContext | MyWizardContext,
+  ctx: MyContext,
   text: string,
   extra: ExtraEditMessageText,
 ) {
@@ -32,13 +32,13 @@ export async function replyOrEdit(
   ctx.session.messageId = reply.message_id
 }
 
-export function addPrevScene(ctx: MySceneContext, scene: string) {
+export function addPrevScene(ctx: MyContext, scene: string) {
   const state = ctx.scene.session.state
   state.prevScene ? state.prevScene.push(scene) : (state.prevScene = [scene])
   return state
 }
 
-export function backCallback(ctx: MySceneContext, scene: string) {
+export function backCallback(ctx: MyContext, scene: string) {
   const state = ctx.scene.session.state
   const prevScene = state.prevScene?.pop() || scene
 

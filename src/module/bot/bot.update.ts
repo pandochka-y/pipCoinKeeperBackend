@@ -6,19 +6,19 @@ import { UsersService } from '../users/users.service'
 import { BotName, COMMANDS, SCENES } from './bot.constants'
 import { BotService } from './bot.service'
 import { createUserDtoFactory } from './bot.utils'
-import { MySceneContext } from './bot.interface'
+import { MyContext } from './bot.interface'
 
 @Update()
 export class BotUpdate {
   constructor(
     @InjectBot(BotName)
-    private readonly bot: Telegraf<MySceneContext>,
+    private readonly bot: Telegraf<MyContext>,
     private readonly botService: BotService,
     private readonly usersService: UsersService,
   ) {}
 
   @Start()
-  async onStart(ctx: MySceneContext) {
+  async onStart(ctx: MyContext) {
     const createUserDto = createUserDtoFactory(ctx)
     await this.usersService.welcomeTelegramUser(createUserDto)
     ctx.session.messageId = undefined
@@ -26,7 +26,7 @@ export class BotUpdate {
   }
 
   @Action(COMMANDS.BOARDS)
-  async onGetBoards(ctx: MySceneContext) {
+  async onGetBoards(ctx: MyContext) {
     ctx.scene.enter(SCENES.BOARDS)
     // await this.botService.getBoards(ctx)
   }

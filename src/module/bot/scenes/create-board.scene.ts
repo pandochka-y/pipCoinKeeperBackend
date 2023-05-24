@@ -2,7 +2,7 @@ import { Context, Message, Wizard, WizardStep } from 'nestjs-telegraf'
 
 import { SCENES } from '../bot.constants'
 import { BotService } from '../bot.service'
-import { MyWizardContext } from '../bot.interface'
+import { MyContext } from '../bot.interface'
 import { CreateBoardDto } from '../../board/dto/create-board.dto'
 import { CurrencyService } from '../../currency/currency.service'
 import { BoardUsersService } from '../../board-users/board-users.service'
@@ -18,13 +18,13 @@ export class CreateBoardScene {
   ) {}
 
   @WizardStep(1)
-  async step0(@Context() ctx: MyWizardContext) {
+  async step0(@Context() ctx: MyContext) {
     await ctx.reply('Введите название доски:')
     ctx.wizard.next()
   }
 
   @WizardStep(2)
-  async step1(@Message('text') text: string, @Context() ctx: MyWizardContext) {
+  async step1(@Message('text') text: string, @Context() ctx: MyContext) {
     const user = await this.botService.getUser(ctx.from.id)
     ctx.scene.session.should_active = !user.active_board_id
     ctx.scene.session.create_board = {
@@ -36,7 +36,7 @@ export class CreateBoardScene {
   }
 
   @WizardStep(3)
-  async step3(@Message('text') text: string, @Context() ctx: MyWizardContext) {
+  async step3(@Message('text') text: string, @Context() ctx: MyContext) {
     const currency = await this.currencyService.getCurrencyByCode(text.toUpperCase())
     if (!currency) {
       await ctx.reply('Валюта не найдена \nПопробуйте еще раз')
@@ -49,7 +49,7 @@ export class CreateBoardScene {
   }
 
   @WizardStep(4)
-  async step4(@Message('text') text: string, @Context() ctx: MyWizardContext) {
+  async step4(@Message('text') text: string, @Context() ctx: MyContext) {
     const limit = Number(text) || 0
     const createBoardDto = {
       ...ctx.scene.session.create_board,
