@@ -11,6 +11,9 @@ import { Currency } from './currency.model'
   imports: [
     SequelizeModule.forFeature([Currency]),
   ],
+  exports: [
+    CurrencyService,
+  ],
 })
 export class CurrencyModule {
 }

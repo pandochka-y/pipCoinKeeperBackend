@@ -25,13 +25,15 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dayjs": "^1.11.7",
+    "nestjs-telegraf": "^2.6.3",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "sequelize": "^6.30.0",
     "sequelize-typescript": "^2.1.5",
-    "swagger-ui-express": "^4.6.2"
+    "swagger-ui-express": "^4.6.2",
+    "telegraf": "^4.12.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.38.4",

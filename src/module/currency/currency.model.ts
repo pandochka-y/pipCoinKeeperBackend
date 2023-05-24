@@ -13,7 +13,7 @@ export class Currency extends Model<Currency, ICurrencyCreationAttributes> {
   id: number
 
   @ApiProperty({ example: 'RUB', description: 'currency code' })
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: false, unique: true })
   code: string
 
   // @CreatedAt

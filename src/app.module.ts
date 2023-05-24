@@ -20,6 +20,7 @@ import { BoardUser } from './module/board-users/board-users.model'
 import { Operation } from './module/operations/operations.model'
 import { RolesModule } from './module/roles/roles.module'
 import { Role } from './module/roles/roles.model'
+import { BotModule } from './module/bot/bot.module'
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { Role } from './module/roles/roles.model'
     BoardUsersModule,
     OperationsModule,
     RolesModule,
+    BotModule,
   ],
 })
 export class AppModule {

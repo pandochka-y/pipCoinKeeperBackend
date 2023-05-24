@@ -14,6 +14,9 @@ export class BoardService {
   }
 
   async createBoard(boardDto: CreateBoardDto) {
+    const boards = await this.boardRepository.findAll({ where: { id: boardDto.user_id } })
+    if (boards.length && !boardDto.name)
+      boardDto.name = `${boardDto.name} ${boards.length}`
     return await this.boardRepository.create(boardDto)
   }
 

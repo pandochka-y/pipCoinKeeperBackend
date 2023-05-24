@@ -31,6 +31,10 @@ export class Board extends Model<Board, IBoardCreationAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: true })
   amount_limit: number
 
+  @ApiProperty({ example: 'Board name', description: 'Board name' })
+  @Column({ type: DataType.STRING, defaultValue: 'New Board' })
+  name: string
+
   @ApiProperty({ example: '21', description: 'current currency', readOnly: true })
   @ForeignKey(() => Currency)
   @Column({ type: DataType.INTEGER })
