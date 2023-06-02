@@ -21,9 +21,9 @@ export class BotService {
 
   async start(ctx: MyContext) {
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
-    const buttons = [user.active_board ? [BUTTONS.TO_ACTIVE_BOARD] : [], [BUTTONS.BOARDS]]
+    const buttons = [user.active_board_id ? [BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)] : [], [BUTTONS.BOARDS]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    return await replyOrEdit(ctx, TEXT.START, inlineKeyboard)
+    return await replyOrEdit(ctx, user.active_board ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
   }
 
   async getBoards(ctx: MyContext) {
@@ -35,7 +35,13 @@ export class BotService {
   }
 
   async getDetailBoard(ctx: MyContext) {
-    await ctx.reply('detail board')
+    const id = parseInt(ctx.match[1])
+    if (!id) {
+      await ctx.reply('detail board')
+      return
+    }
+    const board = await this.boardsService.getBoardById(id)
+    await ctx.replyWithHTML('detail board ')
   }
 
   async createBoard(dto: CreateBoardDto) {

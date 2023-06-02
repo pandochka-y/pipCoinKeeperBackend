@@ -1,6 +1,7 @@
 import { ExtraEditMessageText } from 'telegraf/typings/telegram-types'
 
 import { CreateUserTelegramDto } from '../users/dto/create-user.dto'
+import { Board } from '../board/board.model'
 
 import { MyContext } from './bot.interface'
 
@@ -28,7 +29,7 @@ export async function replyOrEdit(
       extra,
     )
   }
-  const reply = await ctx.replyWithHTML(text, extra)
+  const reply = await ctx.replyWithMarkdownV2(text, extra)
   ctx.session.messageId = reply.message_id
 }
 
@@ -43,4 +44,11 @@ export function backCallback(ctx: MyContext, scene: string) {
   const prevScene = state.prevScene?.pop() || scene
 
   return { scene: prevScene, state }
+}
+
+export function getListButtonBoards(boards: Board[]) {
+  // TODO: get list of boards
+  // return boards.map(board => {
+  //
+  // })
 }

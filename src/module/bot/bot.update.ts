@@ -27,12 +27,11 @@ export class BotUpdate {
 
   @Action(COMMANDS.BOARDS)
   async onGetBoards(ctx: MyContext) {
-    ctx.scene.enter(SCENES.BOARDS)
-    // await this.botService.getBoards(ctx)
+    await ctx.scene.enter(SCENES.BOARDS)
   }
 
-  // @Hears(/\/detail-board\s(.*)/)
-  // async onGetBoard(ctx: MySceneContext) {
-  //   return await this.botService.getDetailBoard(ctx)
-  // }
+  @Action(/detail-board\s(.*)/)
+  async onGetDetailBoard(ctx: MyContext) {
+    return await this.botService.getDetailBoard(ctx)
+  }
 }

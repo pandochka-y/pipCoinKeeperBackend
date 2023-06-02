@@ -32,4 +32,6 @@ export class BoardsScene {
     // const { scene, state } = backCallback(ctx, SCENES.BOARDS)
     // await ctx.scene.enter(scene, state)
   }
+
+  // TODO: enter scene to detail board
 }
