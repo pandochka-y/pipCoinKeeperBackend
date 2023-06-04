@@ -25,8 +25,8 @@ export class Role extends Model<Role, IUserCreationAttributes> {
   id: number
 
   @ApiProperty({ example: 'ADMIN', description: 'role name' })
-  @Column({ type: DataType.STRING, defaultValue: 'USER' })
-  role: string
+  @Column({ type: DataType.STRING, defaultValue: 'ADMIN' })
+  name: string
 
   // @CreatedAt
   // createt_at: Date

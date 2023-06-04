@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 
+import { Role } from '../roles/roles.model'
+
 import { BoardUser } from './board-users.model'
 import { CreateBoardUserDto } from './dto/create-board-user.dto'
 import { GetBoardUsersDto } from './dto/get-board-users.dto'
@@ -22,7 +24,7 @@ export class BoardUsersService {
   }
 
   async getBoardUserByIds(board_id: number, user_id: number) {
-    return await this.boardUsersRepository.findOne({ where: { board_id, user_id } })
+    return await this.boardUsersRepository.findOne({ where: { board_id, user_id }, include: [{ model: Role }] })
   }
 
   async createBoardUser(dto: CreateBoardUserDto) {

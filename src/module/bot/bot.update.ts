@@ -1,4 +1,4 @@
-import { Action, InjectBot, Start, Update } from 'nestjs-telegraf'
+import { Action, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf'
 import { Telegraf } from 'telegraf'
 
 import { UsersService } from '../users/users.service'
@@ -25,13 +25,24 @@ export class BotUpdate {
     await this.botService.start(ctx)
   }
 
-  @Action(COMMANDS.BOARDS)
+  @Action(COMMANDS.MAIN_MENU)
+  async onMainMenu(ctx: MyContext) {
+    await this.botService.start(ctx)
+  }
+
+  @Action(COMMANDS.BOARD_LIST)
   async onGetBoards(ctx: MyContext) {
-    await ctx.scene.enter(SCENES.BOARDS)
+    await ctx.scene.enter(SCENES.BOARD_LIST)
+  }
+
+  @Action(COMMANDS.BACK)
+  async onBackAction(@Ctx() ctx: MyContext) {
+    await this.botService.start(ctx)
   }
 
   @Action(/detail-board\s(.*)/)
   async onGetDetailBoard(ctx: MyContext) {
-    return await this.botService.getDetailBoard(ctx)
+    return await ctx.scene.enter(SCENES.DETAIL_BOARD, { testState: ctx.match[1] })
+    // return await this.botService.getDetailBoard(ctx)
   }
 }

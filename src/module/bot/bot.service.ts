@@ -20,9 +20,11 @@ export class BotService {
   ) {}
 
   async start(ctx: MyContext) {
+    console.log('ctx scene session', ctx.session.user_id)
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
-    const buttons = [user.active_board_id ? [BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)] : [], [BUTTONS.BOARDS]]
+    const buttons = [user.active_board_id ? [BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)] : [], [BUTTONS.BOARD_LIST]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
+
     return await replyOrEdit(ctx, user.active_board ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
   }
 
@@ -46,6 +48,16 @@ export class BotService {
 
   async createBoard(dto: CreateBoardDto) {
     return await this.boardsService.createBoard(dto)
+  }
+
+  async getUserId(ctx: MyContext) {
+    let user_id = ctx.session.user_id
+    if (user_id)
+      return user_id
+
+    const user = await this.usersService.getUserByTelegramId(ctx.from.id)
+    user_id = user.id
+    return user_id
   }
 
   async getUser(id: number) {

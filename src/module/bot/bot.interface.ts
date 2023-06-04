@@ -23,5 +23,6 @@ interface MySession extends Scenes.WizardSessionData {
 }
 
 interface Session extends Scenes.WizardSession<MySession> {
-  messageId: number
+  messageId?: number
+  user_id?: number
 }

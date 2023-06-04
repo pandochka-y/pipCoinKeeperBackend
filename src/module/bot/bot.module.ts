@@ -9,15 +9,17 @@ import { BoardUsersModule } from '../board-users/board-users.module'
 import { BotService } from './bot.service'
 import { botMiddleware } from './bot.middleware'
 import { BotUpdate } from './bot.update'
-import { BoardsScene } from './scenes/boards.scene'
+import { BoardListScene } from './scenes/board-list.scene'
 import { CreateBoardScene } from './scenes/create-board.scene'
+import { DetailBoardScene } from './scenes/detail-board.scene'
 
 @Module({
   providers: [
     BotService,
     BotUpdate,
-    BoardsScene,
+    BoardListScene,
     CreateBoardScene,
+    DetailBoardScene,
   ],
   imports: [
     TelegrafModule.forRootAsync({

@@ -6,8 +6,8 @@ import { MyContext } from '../bot.interface'
 import { BUTTONS, COMMANDS, SCENES, TEXT } from '../bot.constants'
 import { replyOrEdit } from '../bot.utils'
 
-@Scene(SCENES.BOARDS)
-export class BoardsScene {
+@Scene(SCENES.BOARD_LIST)
+export class BoardListScene {
   constructor(
     private readonly botService: BotService,
   ) {}
@@ -15,7 +15,7 @@ export class BoardsScene {
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
     const user = await this.botService.getUser(ctx.from.id)
-    const buttons = [(user.boards?.length ? [BUTTONS.BOARDS] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK]]
+    const buttons = [(user.boards?.length ? [BUTTONS.BOARD_LIST, BUTTONS.CREATE_BOARD] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
     await replyOrEdit(ctx, TEXT.BOARDS, inlineKeyboard)
     // await this.botService.getBoards(ctx)
@@ -32,6 +32,4 @@ export class BoardsScene {
     // const { scene, state } = backCallback(ctx, SCENES.BOARDS)
     // await ctx.scene.enter(scene, state)
   }
-
-  // TODO: enter scene to detail board
 }
