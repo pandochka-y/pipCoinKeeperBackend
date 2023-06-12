@@ -51,12 +51,13 @@ export class User extends Model<User, IUserCreationAttributes> {
   @Column({ type: DataType.INTEGER })
   telegram_id: number
 
-  @ForeignKey(() => Board)
   @ApiProperty({ example: '123', description: 'active board id' })
   @Column({ type: DataType.INTEGER, allowNull: true })
+  @ForeignKey(() => Board)
   active_board_id: number
 
-  @HasOne(() => Board)
+  // FIXME: set props id for active board
+  @HasOne(() => Board, { })
   active_board: Board
 
   @HasMany(() => Board)
@@ -66,7 +67,7 @@ export class User extends Model<User, IUserCreationAttributes> {
   member_boards: BoardUser[]
 
   @CreatedAt
-  registered_at: Date
+  created_at: Date
 
   @UpdatedAt
   updated_at: Date

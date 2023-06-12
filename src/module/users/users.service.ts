@@ -23,7 +23,8 @@ export class UsersService {
   }
 
   async setActiveBoard(user_id: number, board_id: number) {
-    return await this.userRepository.update({ active_board_id: board_id }, { where: { id: user_id } })
+    const user = await this.userRepository.findOne({ where: { id: user_id } })
+    return user.update({ active_board_id: board_id }, { where: { id: user_id } })
   }
 
   async updateUserById(id: number, dto: CreateUserTelegramDto) {

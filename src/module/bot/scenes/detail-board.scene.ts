@@ -21,9 +21,8 @@ export class DetailBoardScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: MyContext) {
-    // TODO: initial state second arg
-    console.log('scene detail', ctx.scene.state)
-    const board_id = ctx.match[1] || 0
+    // TODO: initial state second argument
+    const board_id = ctx.scene.session.state.board_id
     const user_id = await this.botService.getUserId(ctx)
     const boardUser = await this.boardUsersService.getBoardUserByIds(board_id, user_id)
     if (!boardUser) {
@@ -35,10 +34,8 @@ export class DetailBoardScene {
     const board = await this.boardService.getBoardById(board_id)
     const buttons = [
       [BUTTONS.BOARD_REPORT, BUTTONS.BOARD_MANAGEMENT(shouldBoardManage)],
-      [BUTTONS.PAYMENT_LIST],
-      [BUTTONS.CREATE_PAYMENT(shouldPaymentManage)],
+      [BUTTONS.PAYMENT_MANAGEMENT(shouldPaymentManage)],
       [BUTTONS.BACK, BUTTONS.MAIN_MENU],
-
     ]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
     await replyOrEdit(ctx, `${board.name}`, inlineKeyboard)
@@ -49,8 +46,23 @@ export class DetailBoardScene {
     await ctx.scene.enter(SCENES.BOARD_REPORT)
   }
 
-  @Action(COMMANDS.BACK)
-  async onBackAction(@Ctx() ctx: MyContext) {
-    await this.botService.start(ctx)
+  @Action(COMMANDS.PAYMENT_LIST)
+  async onPaymentListAction(@Ctx() ctx: MyContext) {
+    await ctx.scene.enter(SCENES.PAYMENT_LIST)
+  }
+
+  @Action(COMMANDS.CREATE_PAYMENT)
+  async onCreatePaymentAction(@Ctx() ctx: MyContext) {
+    await ctx.scene.enter(SCENES.CREATE_PAYMENT)
+  }
+
+  @Action(COMMANDS.PAYMENT_MANAGEMENT)
+  async onPaymentManagementAction(@Ctx() ctx: MyContext) {
+    await ctx.scene.enter(SCENES.PAYMENT_MANAGEMENT)
+  }
+
+  @Action(COMMANDS.BOARD_MANAGEMENT)
+  async onBoardManagementAction(@Ctx() ctx: MyContext) {
+    await ctx.scene.enter(SCENES.BOARD_MANAGEMENT)
   }
 }

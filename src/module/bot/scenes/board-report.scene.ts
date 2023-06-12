@@ -8,7 +8,7 @@ import { UsersService } from '../../users/users.service'
 import { BoardService } from '../../board/board.service'
 
 @Scene(SCENES.BOARD_REPORT)
-export class DetailBoardScene {
+export class BoardReportScene {
   constructor(
     private readonly botService: BotService,
     private readonly boardUsersService: BoardUsersService,

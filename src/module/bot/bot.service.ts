@@ -20,11 +20,11 @@ export class BotService {
   ) {}
 
   async start(ctx: MyContext) {
-    console.log('ctx scene session', ctx.session.user_id)
+    ctx.session.current_scene = undefined
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
-    const buttons = [user.active_board_id ? [BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)] : [], [BUTTONS.BOARD_LIST]]
+    console.log('id active board', user.active_board)
+    const buttons = [[BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)], [BUTTONS.BOARD_LIST]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-
     return await replyOrEdit(ctx, user.active_board ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
   }
 

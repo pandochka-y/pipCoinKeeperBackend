@@ -13,16 +13,16 @@ export interface MyContext extends BaseContext {
 
 interface MySession extends Scenes.WizardSessionData {
   state: {
-    board?: string
-    boardAmount?: number
     limit?: string
+    board_id: number
     prevScene?: string[]
   }
   create_board: Partial<CreateBoardDto>
-  should_active: boolean
+  should_favorite: boolean
 }
 
 interface Session extends Scenes.WizardSession<MySession> {
   messageId?: number
   user_id?: number
+  current_scene?: string
 }

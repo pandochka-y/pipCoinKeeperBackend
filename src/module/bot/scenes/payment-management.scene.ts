@@ -7,8 +7,8 @@ import { BoardUsersService } from '../../board-users/board-users.service'
 import { UsersService } from '../../users/users.service'
 import { BoardService } from '../../board/board.service'
 
-@Scene(SCENES.BOARD_MANAGEMENT)
-export class BoardManagementScene {
+@Scene(SCENES.PAYMENT_MANAGEMENT)
+export class PaymentManagementScene {
   constructor(
     private readonly botService: BotService,
     private readonly boardUsersService: BoardUsersService,
@@ -18,8 +18,8 @@ export class BoardManagementScene {
 
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
-    console.log('scene board management', ctx)
-    await ctx.reply('scene board management')
+    console.log('scene payment management', ctx)
+    await ctx.reply('scene payment management')
     // const board_id = ctx.match[1]
     // const user_id = await this.botService.getUserId(ctx)
     // const member = await this.boardUsersService.getBoardUserByIds(board_id, user_id)

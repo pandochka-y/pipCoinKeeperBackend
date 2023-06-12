@@ -21,6 +21,7 @@ import { Operation } from './module/operations/operations.model'
 import { RolesModule } from './module/roles/roles.module'
 import { Role } from './module/roles/roles.model'
 import { BotModule } from './module/bot/bot.module'
+import { CategoryLimit } from './module/categories/categories-limit.model'
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { BotModule } from './module/bot/bot.module'
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       autoLoadModels: true,
-      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, BoardUser, Operation, Role],
+      models: [User, Board, Currency, MerchantCode, CategoryMC, Category, BoardUser, Operation, Role, CategoryLimit],
     }),
     UsersModule,
     BoardModule,

@@ -1,9 +1,11 @@
 import { ExtraEditMessageText } from 'telegraf/typings/telegram-types'
+import { Markup } from 'telegraf'
 
 import { CreateUserTelegramDto } from '../users/dto/create-user.dto'
-import { Board } from '../board/board.model'
 
 import { MyContext } from './bot.interface'
+
+// import type { Markup } from 'telegraf/typings/markup'
 
 export function createUserDtoFactory(ctx: MyContext): CreateUserTelegramDto {
   return {
@@ -33,22 +35,26 @@ export async function replyOrEdit(
   ctx.session.messageId = reply.message_id
 }
 
-export function addPrevScene(ctx: MyContext, scene: string) {
+export function addPrevScene(ctx: MyContext) {
+  const current = ctx.session.current_scene
   const state = ctx.scene.session.state
-  state.prevScene ? state.prevScene.push(scene) : (state.prevScene = [scene])
+  if (current)
+    state.prevScene ? state.prevScene.push(current) : (state.prevScene = [current])
+
   return state
 }
 
-export function backCallback(ctx: MyContext, scene: string) {
+export function backToPrevScene(ctx: MyContext) {
   const state = ctx.scene.session.state
-  const prevScene = state.prevScene?.pop() || scene
+  const prevScene = state.prevScene?.pop()
 
   return { scene: prevScene, state }
 }
 
-export function getListButtonBoards(boards: Board[]) {
-  // TODO: get list of boards
-  // return boards.map(board => {
-  //
-  // })
+export function getListButton<T>(
+  items: T[],
+  button: (obj: T) => ReturnType<typeof Markup.button.callback>,
+) {
+  return items.map(item => [button(item)],
+  )
 }

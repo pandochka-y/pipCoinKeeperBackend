@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { Op } from 'sequelize'
 
 import { Currency } from './currency.model'
 import { CreateCurrencyDto } from './dto/create-currency.dto'
@@ -13,8 +14,8 @@ export class CurrencyService {
     return await this.currencyRepository.findAll()
   }
 
-  async getCurrencyByCode(code: string) {
-    return await this.currencyRepository.findOne({ where: { code } })
+  async getCurrencyByCodeOrSymbol(codeOrSymbol: string) {
+    return await this.currencyRepository.findOne({ where: { [Op.or]: [{ code: codeOrSymbol }, { currency_symbol: codeOrSymbol }] } })
   }
 
   async createCurrency(code: CreateCurrencyDto) {

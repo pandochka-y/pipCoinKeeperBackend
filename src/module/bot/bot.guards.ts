@@ -43,4 +43,4 @@ export function messageAccessDenied(ctx: MyContext, text: string) {
   return replyOrEdit(ctx, text, inlineKeyboard)
 }
 
-type valueOf<T> = T[keyof T]
+export type valueOf<T> = T[keyof T]

@@ -16,9 +16,7 @@ export class Currency extends Model<Currency, ICurrencyCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
   code: string
 
-  // @CreatedAt
-  // registered_at: Date
-  //
-  // @UpdatedAt
-  // updated_at: Date
+  @ApiProperty({ example: '₽', description: 'currency symbol' })
+  @Column({ type: DataType.STRING, allowNull: false })
+  currency_symbol: string
 }

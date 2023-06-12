@@ -21,10 +21,4 @@ export class MerchantCode extends Model<MerchantCode, IMerchantCategoryCreationA
 
   @BelongsToMany(() => Category, () => CategoryMC)
   categories: Category[]
-
-  // @CreatedAt
-  // registered_at: Date
-  //
-  // @UpdatedAt
-  // updated_at: Date
 }

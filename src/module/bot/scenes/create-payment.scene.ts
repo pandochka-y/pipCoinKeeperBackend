@@ -8,8 +8,8 @@ import { CurrencyService } from '../../currency/currency.service'
 import { BoardUsersService } from '../../board-users/board-users.service'
 import { UsersService } from '../../users/users.service'
 
-@Wizard(SCENES.CREATE_BOARD)
-export class CreateBoardScene {
+@Wizard(SCENES.CREATE_PAYMENT)
+export class CreatePaymentScene {
   constructor(
     private readonly botService: BotService,
     private readonly currencyService: CurrencyService,
@@ -18,44 +18,43 @@ export class CreateBoardScene {
   ) {}
 
   @WizardStep(1)
-  async step0(@Context() ctx: MyContext) {
-    await ctx.reply('Введите название доски:')
+  async init(@Context() ctx: MyContext) {
+    await ctx.reply('Введите сумму:')
     ctx.wizard.next()
   }
 
   @WizardStep(2)
-  async step1(@Message('text') text: string, @Context() ctx: MyContext) {
+  async enterAmount(@Message('text') text: string, @Context() ctx: MyContext) {
     const user = await this.botService.getUser(ctx.from.id)
     ctx.scene.session.should_favorite = !user.active_board_id
     ctx.scene.session.create_board = {
       name: text,
       user_id: user.id,
     }
-    await ctx.reply('Введите символ или код валюты:')
+    await ctx.reply('Введите категорию:')
     ctx.wizard.next()
   }
 
   @WizardStep(3)
-  async step3(@Message('text') text: string, @Context() ctx: MyContext) {
+  async enterCategory(@Message('text') text: string, @Context() ctx: MyContext) {
     const currency = await this.currencyService.getCurrencyByCodeOrSymbol(text.toUpperCase())
     if (!currency) {
-      await ctx.reply('Валюта не найдена \nПопробуйте еще раз')
-      await ctx.wizard.selectStep(2)
+      await ctx.replyWithMarkdownV2('Валюта не найдена \nПопробуйте еще раз')
+      ctx.wizard.selectStep(2)
       return
     }
     ctx.scene.session.create_board.currency_id = currency.id
-    await ctx.reply('Введите лимит:')
+    await ctx.reply('Введите общий лимит доски:')
     ctx.wizard.next()
   }
 
   @WizardStep(4)
-  async step4(@Message('text') text: string, @Context() ctx: MyContext) {
+  async enterAmountLimit(@Message('text') text: string, @Context() ctx: MyContext) {
     const limit = Number(text) || 0
     const createBoardDto = {
       ...ctx.scene.session.create_board,
       amount_limit: limit,
     } as CreateBoardDto
-
     try {
       const board = await this.botService.createBoard(createBoardDto)
       const boardUserDto = {
@@ -63,21 +62,18 @@ export class CreateBoardScene {
         user_id: ctx.scene.session.create_board.user_id,
         role_id: 1,
       }
-      console.log('create board', createBoardDto)
+
       await this.boardUserService.createBoardUser(boardUserDto)
       await ctx.reply(`Доска ${board.name} ${board.id} создана`)
 
       if (ctx.scene.session.should_favorite) {
-        console.log('set active board')
         await this.usersService.setActiveBoard(board.user_id, board.id)
         await ctx.reply(`Доска ${board.name} выбрана по умолчанию`)
       }
 
-      const user = await this.botService.getUser(ctx.from.id)
-      console.log('user after', user)
       ctx.session.messageId = undefined
-      await ctx.scene.leave()
       await this.botService.start(ctx)
+      await ctx.scene.leave()
     }
     catch (e) {
       await ctx.reply(`${e.message}`)

@@ -22,7 +22,7 @@ export class CurrencyController {
   @ApiResponse({ type: Currency })
   @Get('/:code')
   getCurrencyByCode(@Param('code') code: string) {
-    return this.currencyService.getCurrencyByCode(code)
+    return this.currencyService.getCurrencyByCodeOrSymbol(code)
   }
 
   @ApiOperation({ summary: 'Create currency' })

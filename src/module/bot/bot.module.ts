@@ -12,6 +12,11 @@ import { BotUpdate } from './bot.update'
 import { BoardListScene } from './scenes/board-list.scene'
 import { CreateBoardScene } from './scenes/create-board.scene'
 import { DetailBoardScene } from './scenes/detail-board.scene'
+import { BoardManagementScene } from './scenes/board-management.scene'
+import { PaymentListScene } from './scenes/payment-list.scene'
+import { BoardReportScene } from './scenes/board-report.scene'
+import { CreatePaymentScene } from './scenes/create-payment.scene'
+import { PaymentManagementScene } from './scenes/payment-management.scene'
 
 @Module({
   providers: [
@@ -20,7 +25,14 @@ import { DetailBoardScene } from './scenes/detail-board.scene'
     BoardListScene,
     CreateBoardScene,
     DetailBoardScene,
+    BoardListScene,
+    BoardManagementScene,
+    PaymentListScene,
+    BoardReportScene,
+    CreatePaymentScene,
+    PaymentManagementScene,
   ],
+
   imports: [
     TelegrafModule.forRootAsync({
       botName: 'bot',
@@ -28,6 +40,9 @@ import { DetailBoardScene } from './scenes/detail-board.scene'
         token: process.env.BOT_TOKEN,
         include: [BotModule],
         middlewares: [botMiddleware],
+        launchOptions: {
+
+        },
       }),
     }),
     UsersModule,

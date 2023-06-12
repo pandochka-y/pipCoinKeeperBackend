@@ -5,7 +5,7 @@ import { UsersService } from '../users/users.service'
 
 import { BotName, COMMANDS, SCENES } from './bot.constants'
 import { BotService } from './bot.service'
-import { createUserDtoFactory } from './bot.utils'
+import { addPrevScene, backToPrevScene, createUserDtoFactory } from './bot.utils'
 import { MyContext } from './bot.interface'
 
 @Update()
@@ -37,12 +37,19 @@ export class BotUpdate {
 
   @Action(COMMANDS.BACK)
   async onBackAction(@Ctx() ctx: MyContext) {
-    await this.botService.start(ctx)
+    if (!ctx.session.current_scene) {
+      await this.botService.start(ctx)
+      return
+    }
+
+    const { scene, state } = backToPrevScene(ctx)
+    return await ctx.scene.enter(scene, state)
   }
 
   @Action(/detail-board\s(.*)/)
   async onGetDetailBoard(ctx: MyContext) {
-    return await ctx.scene.enter(SCENES.DETAIL_BOARD, { testState: ctx.match[1] })
-    // return await this.botService.getDetailBoard(ctx)
+    const board_id = ctx.match[1] || -1
+    const state = addPrevScene(ctx)
+    return await ctx.scene.enter(SCENES.DETAIL_BOARD, { ...state, board_id })
   }
 }

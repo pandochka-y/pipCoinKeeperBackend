@@ -4,24 +4,18 @@ import { Markup } from 'telegraf'
 import { BotService } from '../bot.service'
 import { MyContext } from '../bot.interface'
 import { BUTTONS, COMMANDS, SCENES, TEXT } from '../bot.constants'
-import { getListButton, replyOrEdit } from '../bot.utils'
-import { BoardService } from '../../board/board.service'
+import { replyOrEdit } from '../bot.utils'
 
-@Scene(SCENES.BOARD_LIST)
-export class BoardListScene {
+@Scene(SCENES.PAYMENT_LIST)
+export class PaymentListScene {
   constructor(
     private readonly botService: BotService,
-    private readonly boardService: BoardService,
   ) {}
 
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
-    ctx.session.current_scene = SCENES.BOARD_LIST
     const user = await this.botService.getUser(ctx.from.id)
-    const boards = await this.boardService.getAllBoardsByUser({ user_id: user.id })
-    const boardButtonList = getListButton(boards, BUTTONS.TO_DETAIL_BOARD)
-    const buttons = [...boardButtonList, [BUTTONS.BACK, BUTTONS.CREATE_BOARD]]
-
+    const buttons = [(user.boards?.length ? [BUTTONS.BOARD_LIST, BUTTONS.CREATE_BOARD] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
     await replyOrEdit(ctx, TEXT.BOARDS, inlineKeyboard)
     // await this.botService.getBoards(ctx)
@@ -31,16 +25,6 @@ export class BoardListScene {
   async onCreateBoard(ctx: MyContext) {
     await ctx.scene.enter(SCENES.CREATE_BOARD)
   }
-
-  // @Action(/detail-board\s(.*)/)
-  // async onGetDetailBoard(ctx: MyContext) {
-  //   const board_id = ctx.match[1] || -1
-  //
-  //   const state = addPrevScene(ctx, SCENES.BOARD_LIST)
-  //   return await ctx.scene.enter(SCENES.DETAIL_BOARD, state)
-  //
-  //   // return await this.botService.getDetailBoard(ctx)
-  // }
 
   @Action(COMMANDS.BACK)
   async onBackAction(@Ctx() ctx: MyContext) {

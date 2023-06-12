@@ -3,7 +3,7 @@ import {
   BelongsToMany,
   Column,
   CreatedAt,
-  DataType, ForeignKey, HasMany,
+  DataType, ForeignKey, HasMany, HasOne,
   Model,
   Table,
   UpdatedAt,
@@ -16,6 +16,7 @@ import { MerchantCode } from '../merchant-code/merchant-code.model'
 import { Operation } from '../operations/operations.model'
 
 import { CategoryMC } from './categories-mc.model'
+import { CategoryLimit } from './categories-limit.model'
 
 interface ICategoryCreationAttributes {
   name: string
@@ -37,6 +38,7 @@ export class Category extends Model<Category, ICategoryCreationAttributes> {
   @ForeignKey(() => Board)
   @Column({ type: DataType.INTEGER })
   board_id: number
+  // TODO: add amount limit to category
 
   @BelongsTo(() => Board)
   board: Board
@@ -47,6 +49,13 @@ export class Category extends Model<Category, ICategoryCreationAttributes> {
 
   @BelongsTo(() => User)
   user: User
+
+  @ForeignKey(() => CategoryLimit)
+  @Column({ type: DataType.INTEGER, allowNull: true })
+  category_limit_id: number
+
+  @HasOne(() => CategoryLimit)
+  limit: CategoryLimit
 
   @BelongsToMany(() => MerchantCode, () => CategoryMC)
   merchant_codes: MerchantCode[]

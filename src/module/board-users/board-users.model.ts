@@ -43,7 +43,7 @@ export class BoardUser extends Model<BoardUser, IBoardCreationAttributes> {
   role: Role
 
   @CreatedAt
-  added_at: Date
+  created_at: Date
 
   @UpdatedAt
   updated_at: Date

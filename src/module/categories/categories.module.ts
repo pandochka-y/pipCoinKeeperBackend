@@ -10,12 +10,13 @@ import { CategoriesService } from './categories.service'
 import { CategoriesController } from './categories.controller'
 import { Category } from './categories.model'
 import { CategoryMC } from './categories-mc.model'
+import { CategoryLimit } from './categories-limit.model'
 
 @Module({
   providers: [CategoriesService],
   controllers: [CategoriesController],
   imports: [
-    SequelizeModule.forFeature([Category, Board, User, MerchantCode, CategoryMC, Operation]),
+    SequelizeModule.forFeature([Category, Board, User, MerchantCode, CategoryMC, Operation, CategoryLimit]),
   ],
 })
 
