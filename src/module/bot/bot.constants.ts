@@ -20,6 +20,7 @@ export const COMMANDS = {
   PAYMENT_DETAIL: 'payment_detail',
   CREATE_PAYMENT: 'create_payment',
   PAYMENT_MANAGEMENT: 'payment',
+  EDIT_CURRENCY: 'edit_currency',
 }
 
 export const SCENES = {
@@ -48,6 +49,7 @@ export const BUTTONS = {
   PAYMENT_LIST: Markup.button.callback('💳 Список платежей', COMMANDS.PAYMENT_LIST),
   CREATE_PAYMENT: (shouldAccess = false) => Markup.button.callback('💳 Добавить платеж', COMMANDS.CREATE_PAYMENT, !shouldAccess),
   PAYMENT_MANAGEMENT: (shouldAccess = false) => Markup.button.callback('💳 Платежи', COMMANDS.PAYMENT_MANAGEMENT, !shouldAccess),
+  EDIT_CURRENCY: (shouldAccess = false) => Markup.button.callback('🔄 Изменить валюту', COMMANDS.EDIT_CURRENCY, !shouldAccess),
 }
 
 export const ACCESS_OPERATIONS = {

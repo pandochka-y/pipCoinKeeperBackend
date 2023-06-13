@@ -21,14 +21,14 @@ export class DetailBoardScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: MyContext) {
-    // TODO: initial state second argument
     const board_id = ctx.scene.session.state.board_id
-    const user_id = await this.botService.getUserId(ctx)
-    const boardUser = await this.boardUsersService.getBoardUserByIds(board_id, user_id)
+    const user = await this.botService.getUser(ctx.from.id)
+    const boardUser = await this.boardUsersService.getBoardUserByIds(board_id, user.id)
     if (!boardUser) {
       await messageAccessDenied(ctx, 'Доска не найдена или доступ к данной доске закрыт')
       return false
     }
+    ctx.scene.session.state.boardUser.role = boardUser.role.name
     const shouldBoardManage = await canActivate(ctx, boardUser.role.name, OPERATIONS.BOARD_MANAGEMENT)
     const shouldPaymentManage = await canActivate(ctx, boardUser.role.name, OPERATIONS.PAYMENT_MANAGE)
     const board = await this.boardService.getBoardById(board_id)
@@ -38,7 +38,7 @@ export class DetailBoardScene {
       [BUTTONS.BACK, BUTTONS.MAIN_MENU],
     ]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    await replyOrEdit(ctx, `${board.name}`, inlineKeyboard)
+    await replyOrEdit(ctx, `Детальная: ${board.name}`, inlineKeyboard)
   }
 
   @Action(COMMANDS.BOARD_REPORT)
@@ -63,6 +63,7 @@ export class DetailBoardScene {
 
   @Action(COMMANDS.BOARD_MANAGEMENT)
   async onBoardManagementAction(@Ctx() ctx: MyContext) {
-    await ctx.scene.enter(SCENES.BOARD_MANAGEMENT)
+    // TODO: add on prev scene action
+    await ctx.scene.enter(SCENES.BOARD_MANAGEMENT, ctx.scene.session.state)
   }
 }

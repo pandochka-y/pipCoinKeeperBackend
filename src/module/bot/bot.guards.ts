@@ -7,6 +7,7 @@ import { replyOrEdit } from './bot.utils'
 export const OPERATIONS = {
   BOARD_MANAGEMENT: 'board_management',
   PAYMENT_MANAGE: 'payment_management',
+  EDIT_CURRENCY: 'edit_currency',
 } as const
 
 export enum ROLES {
@@ -22,14 +23,14 @@ export enum TYPE_ACCESS {
 export const ACCESS_OPERATIONS = {
   [TYPE_ACCESS.BOARDS]: {
     [ROLES.ADMIN]: Object.values(OPERATIONS),
-    [ROLES.BOARD_USER]: [OPERATIONS.PAYMENT_MANAGE],
+    [ROLES.BOARD_USER]: [OPERATIONS.PAYMENT_MANAGE, OPERATIONS.EDIT_CURRENCY],
   },
   [TYPE_ACCESS.BOT]: {
     [ROLES.ADMIN]: [],
   },
 } as const
 
-export async function canActivate(
+export function canActivate(
   ctx: MyContext, role: string,
   action: valueOf<typeof OPERATIONS>,
   type: valueOf<typeof TYPE_ACCESS> = TYPE_ACCESS.BOARDS,

@@ -56,8 +56,7 @@ export class User extends Model<User, IUserCreationAttributes> {
   @ForeignKey(() => Board)
   active_board_id: number
 
-  // FIXME: set props id for active board
-  @HasOne(() => Board, { })
+  @HasOne(() => Board, { sourceKey: 'active_board_id', foreignKey: 'id' })
   active_board: Board
 
   @HasMany(() => Board)

@@ -15,6 +15,10 @@ interface MySession extends Scenes.WizardSessionData {
   state: {
     limit?: string
     board_id: number
+    // TODO: Add type board_user to session
+    boardUser?: {
+      role: string
+    }
     prevScene?: string[]
   }
   create_board: Partial<CreateBoardDto>

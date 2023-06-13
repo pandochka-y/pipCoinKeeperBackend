@@ -15,7 +15,6 @@ export class OperationsController {
   @ApiOperation({ summary: 'Get all operations' })
   @ApiResponse({ status: 200, type: [Operation] })
   @Get()
-  // TODO: validate query
   getBoardOperations(@Query() query: GetOperationsDto) {
     return this.operationsService.getBoardOperations(query)
   }

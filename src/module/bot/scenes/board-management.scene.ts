@@ -1,4 +1,4 @@
-import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf'
+import { Action, Scene, SceneEnter } from 'nestjs-telegraf'
 
 import { BotService } from '../bot.service'
 import { MyContext } from '../bot.interface'
@@ -6,6 +6,7 @@ import { COMMANDS, SCENES } from '../bot.constants'
 import { BoardUsersService } from '../../board-users/board-users.service'
 import { UsersService } from '../../users/users.service'
 import { BoardService } from '../../board/board.service'
+import { OPERATIONS, canActivate, messageAccessDenied } from '../bot.guards'
 
 @Scene(SCENES.BOARD_MANAGEMENT)
 export class BoardManagementScene {
@@ -17,8 +18,18 @@ export class BoardManagementScene {
   ) {}
 
   @SceneEnter()
+  // TODO: create management panel
   async onSceneEnter(ctx: MyContext) {
-    console.log('scene board management', ctx)
+    const state = ctx.scene.session.state
+    const user_id = await this.botService.getUserId(ctx)
+    const boardUser = await this.boardUsersService.getBoardUserByIds(state.board_id, user_id)
+    if (!boardUser) {
+      await messageAccessDenied(ctx, 'Доступ к данной функции ограничен')
+      return false
+    }
+    const shouldBoardManagement = canActivate(ctx, boardUser.role.name, OPERATIONS.BOARD_MANAGEMENT)
+    const canEditCurrency = canActivate(ctx, boardUser.role.name, OPERATIONS.EDIT_CURRENCY)
+    // TODO: create management panel
     await ctx.reply('scene board management')
     // const board_id = ctx.match[1]
     // const user_id = await this.botService.getUserId(ctx)
@@ -35,12 +46,5 @@ export class BoardManagementScene {
   @Action(COMMANDS.CREATE_BOARD)
   async onCreateBoard(ctx: MyContext) {
     await ctx.scene.enter(SCENES.CREATE_BOARD)
-  }
-
-  @Action(COMMANDS.BACK)
-  async onBackAction(@Ctx() ctx: MyContext) {
-    await this.botService.start(ctx)
-    // const { scene, state } = backCallback(ctx, SCENES.BOARDS)
-    // await ctx.scene.enter(scene, state)
   }
 }

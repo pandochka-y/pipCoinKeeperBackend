@@ -22,6 +22,7 @@ export class BotUpdate {
     const createUserDto = createUserDtoFactory(ctx)
     await this.usersService.welcomeTelegramUser(createUserDto)
     ctx.session.messageId = undefined
+    // TODO: add remove session
     await this.botService.start(ctx)
   }
 

@@ -21,6 +21,7 @@ export class BotService {
 
   async start(ctx: MyContext) {
     ctx.session.current_scene = undefined
+    // TODO: clear session
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
     console.log('id active board', user.active_board)
     const buttons = [[BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)], [BUTTONS.BOARD_LIST]]
@@ -51,13 +52,11 @@ export class BotService {
   }
 
   async getUserId(ctx: MyContext) {
-    let user_id = ctx.session.user_id
-    if (user_id)
-      return user_id
+    if (ctx.session.user_id)
+      return ctx.session.user_id
 
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
-    user_id = user.id
-    return user_id
+    return ctx.session.user_id = user.id
   }
 
   async getUser(id: number) {

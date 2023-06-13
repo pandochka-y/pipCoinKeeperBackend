@@ -38,7 +38,6 @@ export class Category extends Model<Category, ICategoryCreationAttributes> {
   @ForeignKey(() => Board)
   @Column({ type: DataType.INTEGER })
   board_id: number
-  // TODO: add amount limit to category
 
   @BelongsTo(() => Board)
   board: Board
@@ -54,7 +53,7 @@ export class Category extends Model<Category, ICategoryCreationAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: true })
   category_limit_id: number
 
-  @HasOne(() => CategoryLimit)
+  @HasOne(() => CategoryLimit, { sourceKey: 'category_limit_id', foreignKey: 'id' })
   limit: CategoryLimit
 
   @BelongsToMany(() => MerchantCode, () => CategoryMC)
