@@ -21,6 +21,6 @@ export class CategoryMC extends Model<CategoryMC> {
   @Column({ type: DataType.INTEGER })
   merchant_code_id: number
 
-  @BelongsTo(() => MerchantCode)
+  @BelongsTo(() => MerchantCode, { foreignKey: 'merchant_code_id' })
   merchant_code: MerchantCode
 }

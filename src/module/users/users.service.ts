@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 
+import { Board } from '../board/board.model'
+
 import { User } from './users.model'
 import { CreateUserTelegramDto, CreateUserWebDto } from './dto/create-user.dto'
 
@@ -19,7 +21,7 @@ export class UsersService {
   }
 
   async getUserByTelegramId(id: number) {
-    return await this.userRepository.findOne({ where: { telegram_id: id }, include: { all: true } })
+    return await this.userRepository.findOne({ where: { telegram_id: id }, include: { model: Board } })
   }
 
   async setActiveBoard(user_id: number, board_id: number) {

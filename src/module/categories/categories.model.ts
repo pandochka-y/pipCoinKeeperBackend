@@ -53,7 +53,7 @@ export class Category extends Model<Category, ICategoryCreationAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: true })
   category_limit_id: number
 
-  @HasOne(() => CategoryLimit, { sourceKey: 'category_limit_id', foreignKey: 'id' })
+  @HasOne(() => CategoryLimit, { foreignKey: 'category_id' })
   limit: CategoryLimit
 
   @BelongsToMany(() => MerchantCode, () => CategoryMC)

@@ -15,7 +15,7 @@ export class CategoryLimit extends Model<CategoryLimit> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   board_id: number
 
-  @BelongsTo(() => Category)
+  @BelongsTo(() => Category, { foreignKey: 'category_id' })
   category: Category
 
   @Column({ type: DataType.INTEGER })

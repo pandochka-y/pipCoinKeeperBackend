@@ -56,11 +56,10 @@ export class User extends Model<User, IUserCreationAttributes> {
   @ForeignKey(() => Board)
   active_board_id: number
 
-  @HasOne(() => Board, { sourceKey: 'active_board_id', foreignKey: 'id' })
+  @HasOne(() => Board, {
+    foreignKey: 'user_id',
+  })
   active_board: Board
-
-  @HasMany(() => Board)
-  boards: Board[]
 
   @HasMany(() => BoardUser)
   member_boards: BoardUser[]

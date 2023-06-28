@@ -28,10 +28,14 @@ export class DetailBoardScene {
       await messageAccessDenied(ctx, 'Доска не найдена или доступ к данной доске закрыт')
       return false
     }
-    ctx.scene.session.state.boardUser.role = boardUser.role.name
-    const shouldBoardManage = await canActivate(ctx, boardUser.role.name, OPERATIONS.BOARD_MANAGEMENT)
-    const shouldPaymentManage = await canActivate(ctx, boardUser.role.name, OPERATIONS.PAYMENT_MANAGE)
+    ctx.scene.session.state.boardUser = {
+      role: boardUser.role.name,
+    }
+
+    const shouldBoardManage = canActivate(ctx, boardUser.role.name, OPERATIONS.BOARD_MANAGEMENT)
+    const shouldPaymentManage = canActivate(ctx, boardUser.role.name, OPERATIONS.PAYMENT_MANAGE)
     const board = await this.boardService.getBoardById(board_id)
+    console.log('board', board)
     const buttons = [
       [BUTTONS.BOARD_REPORT, BUTTONS.BOARD_MANAGEMENT(shouldBoardManage)],
       [BUTTONS.PAYMENT_MANAGEMENT(shouldPaymentManage)],

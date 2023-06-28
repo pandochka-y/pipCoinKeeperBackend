@@ -47,7 +47,7 @@ export class Board extends Model<Board, IBoardCreationAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   user_id: number
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, { foreignKey: 'user_id' })
   creator: User
 
   @HasMany(() => BoardUser)

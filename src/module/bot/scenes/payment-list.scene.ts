@@ -15,7 +15,8 @@ export class PaymentListScene {
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
     const user = await this.botService.getUser(ctx.from.id)
-    const buttons = [(user.boards?.length ? [BUTTONS.BOARD_LIST, BUTTONS.CREATE_BOARD] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK]]
+    // FIXME: user.role to boardUser
+    const buttons = [(user.role?.length ? [BUTTONS.BOARD_LIST, BUTTONS.CREATE_BOARD] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
     await replyOrEdit(ctx, TEXT.BOARDS, inlineKeyboard)
     // await this.botService.getBoards(ctx)

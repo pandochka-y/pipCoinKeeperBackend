@@ -44,7 +44,7 @@ export class Operation extends Model<Operation, IOperationCreationAttributes> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   board_user_id: number
 
-  @BelongsTo(() => BoardUser)
+  @BelongsTo(() => BoardUser, { foreignKey: 'board_user_id' })
   board_user: BoardUser
 
   @ApiProperty({ example: '123', description: 'Category id' })
