@@ -21,21 +21,20 @@ export class DetailBoardScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: MyContext) {
-    const board_id = ctx.scene.session.state.board_id
-    const user = await this.botService.getUser(ctx.from.id)
-    const boardUser = await this.boardUsersService.getBoardUserByIds(board_id, user.id)
+    const board_id = ctx.scene.session.state.detail_board.board_id
+    const user_id = await this.botService.getUserId(ctx)
+    const boardUser = await this.boardUsersService.getBoardUserByIds(board_id, user_id)
     if (!boardUser) {
       await messageAccessDenied(ctx, 'Доска не найдена или доступ к данной доске закрыт')
       return false
     }
-    ctx.scene.session.state.boardUser = {
-      role: boardUser.role.name,
-    }
+
+    ctx.scene.session.state.detail_board.role = boardUser.role.name
+    ctx.scene.session.state.detail_board.board_user_id = boardUser.board_id
 
     const shouldBoardManage = canActivate(ctx, boardUser.role.name, OPERATIONS.BOARD_MANAGEMENT)
     const shouldPaymentManage = canActivate(ctx, boardUser.role.name, OPERATIONS.PAYMENT_MANAGE)
     const board = await this.boardService.getBoardById(board_id)
-    console.log('board', board)
     const buttons = [
       [BUTTONS.BOARD_REPORT, BUTTONS.BOARD_MANAGEMENT(shouldBoardManage)],
       [BUTTONS.PAYMENT_MANAGEMENT(shouldPaymentManage)],

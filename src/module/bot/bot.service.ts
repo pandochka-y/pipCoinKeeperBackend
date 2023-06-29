@@ -23,8 +23,7 @@ export class BotService {
     ctx.session.current_scene = undefined
     // TODO: clear session
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
-    console.log('id active board', user.active_board)
-    console.log('id active board', user.active_board_id)
+    ctx.session.user_id = user.id
     const buttons = [[BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)], [BUTTONS.BOARD_LIST]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
     return await replyOrEdit(ctx, user.active_board ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
@@ -57,10 +56,12 @@ export class BotService {
       return ctx.session.user_id
 
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
-    return ctx.session.user_id = user.id
+    ctx.session.user_id = user.id
+    return user.id
   }
 
-  async getUser(id: number) {
-    return await this.usersService.getUserByTelegramId(id)
+  async getUser(telegramId: number) {
+    const user = await this.usersService.getUserByTelegramId(telegramId)
+    return user
   }
 }

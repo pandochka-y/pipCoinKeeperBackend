@@ -7,6 +7,7 @@ import { CreateBoardDto } from '../../board/dto/create-board.dto'
 import { CurrencyService } from '../../currency/currency.service'
 import { BoardUsersService } from '../../board-users/board-users.service'
 import { UsersService } from '../../users/users.service'
+import { CreateBoardUserDto } from '../../board-users/dto/create-board-user.dto'
 
 @Wizard(SCENES.CREATE_BOARD)
 export class CreateBoardScene {
@@ -26,11 +27,16 @@ export class CreateBoardScene {
   @WizardStep(2)
   async step1(@Message('text') text: string, @Context() ctx: MyContext) {
     const user = await this.botService.getUser(ctx.from.id)
-    ctx.scene.session.should_favorite = !user.active_board_id
-    ctx.scene.session.create_board = {
-      name: text,
-      user_id: user.id,
+    const shouldBeFavorite = !user.active_board_id
+
+    ctx.scene.session.create.board = {
+      should_favorite: shouldBeFavorite,
+      data: {
+        name: text,
+        user_id: user.id,
+      },
     }
+
     await ctx.reply('Введите символ или код валюты:')
     ctx.wizard.next()
   }
@@ -43,7 +49,7 @@ export class CreateBoardScene {
       await ctx.wizard.selectStep(2)
       return
     }
-    ctx.scene.session.create_board.currency_id = currency.id
+    ctx.scene.session.create.board.data.currency_id = currency.id
     await ctx.reply('Введите лимит:')
     ctx.wizard.next()
   }
@@ -51,30 +57,28 @@ export class CreateBoardScene {
   @WizardStep(4)
   async step4(@Message('text') text: string, @Context() ctx: MyContext) {
     const limit = Number(text) || 0
+    const { data, should_favorite } = ctx.scene.session.create.board
     const createBoardDto = {
-      ...ctx.scene.session.create_board,
+      ...data,
       amount_limit: limit,
     } as CreateBoardDto
 
     try {
       const board = await this.botService.createBoard(createBoardDto)
-      const boardUserDto = {
+      const user_id = await this.botService.getUserId(ctx)
+      const boardUserDto: CreateBoardUserDto = {
+        user_id,
         board_id: board.id,
-        user_id: ctx.scene.session.create_board.user_id,
         role_id: 1,
       }
-      console.log('create board', createBoardDto)
       await this.boardUserService.createBoardUser(boardUserDto)
       await ctx.reply(`Доска ${board.name} ${board.id} создана`)
 
-      if (ctx.scene.session.should_favorite) {
-        console.log('set active board')
+      if (should_favorite) {
         await this.usersService.setActiveBoard(board.user_id, board.id)
         await ctx.reply(`Доска ${board.name} выбрана по умолчанию`)
       }
 
-      const user = await this.botService.getUser(ctx.from.id)
-      console.log('user after', user)
       ctx.session.messageId = undefined
       await ctx.scene.leave()
       await this.botService.start(ctx)

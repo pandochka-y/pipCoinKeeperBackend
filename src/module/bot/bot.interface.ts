@@ -12,21 +12,27 @@ export interface MyContext extends BaseContext {
 }
 
 interface MySession extends Scenes.WizardSessionData {
+
+  // FIXME: think about structure, learn about state of the session
   state: {
-    limit?: string
-    board_id: number
-    // TODO: Add type board_user to session
-    boardUser?: {
-      role: string
-    }
     prevScene?: string[]
+    detail_board?: {
+      board_id: number
+      role: string
+      board_user_id: number
+    }
   }
-  create_board: Partial<CreateBoardDto>
-  should_favorite: boolean
+  create?: {
+    board: {
+      data: Partial<CreateBoardDto>
+      should_favorite: boolean
+    }
+  }
 }
 
 interface Session extends Scenes.WizardSession<MySession> {
   messageId?: number
   user_id?: number
+  favorite_board_id?: number
   current_scene?: string
 }
