@@ -4,7 +4,7 @@ import { Markup } from 'telegraf'
 import { BotService } from '../bot.service'
 import { MyContext } from '../bot.interface'
 import { BUTTONS, COMMANDS, SCENES, TEXT } from '../bot.constants'
-import { replyOrEdit } from '../bot.utils'
+import { replyToMessage } from '../bot.utils'
 
 @Scene(SCENES.PAYMENT_LIST)
 export class PaymentListScene {
@@ -18,7 +18,7 @@ export class PaymentListScene {
     // FIXME: user.role to boardUser
     const buttons = [(user.role?.length ? [BUTTONS.BOARD_LIST, BUTTONS.CREATE_BOARD] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    await replyOrEdit(ctx, TEXT.BOARDS, inlineKeyboard)
+    await replyToMessage(ctx, TEXT.BOARDS, inlineKeyboard)
     // await this.botService.getBoards(ctx)
   }
 

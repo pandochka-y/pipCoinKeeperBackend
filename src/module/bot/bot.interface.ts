@@ -17,9 +17,8 @@ interface MySession extends Scenes.WizardSessionData {
   state: {
     prevScene?: string[]
     detail_board?: {
-      board_id: number
-      role: string
-      board_user_id: number
+      board_id?: number
+      board_user_id?: number
     }
   }
   create?: {

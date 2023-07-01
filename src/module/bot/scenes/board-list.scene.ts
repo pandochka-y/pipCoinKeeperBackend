@@ -4,7 +4,7 @@ import { Markup } from 'telegraf'
 import { BotService } from '../bot.service'
 import { MyContext } from '../bot.interface'
 import { BUTTONS, COMMANDS, SCENES, TEXT } from '../bot.constants'
-import { getListButton, replyOrEdit } from '../bot.utils'
+import { getListButton, replyToMessage } from '../bot.utils'
 import { BoardService } from '../../board/board.service'
 
 @Scene(SCENES.BOARD_LIST)
@@ -23,7 +23,7 @@ export class BoardListScene {
     const buttons = [...boardButtonList, [BUTTONS.BACK, BUTTONS.CREATE_BOARD]]
 
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    await replyOrEdit(ctx, TEXT.BOARDS, inlineKeyboard)
+    await replyToMessage(ctx, TEXT.BOARDS, inlineKeyboard)
     // await this.botService.getBoards(ctx)
   }
 

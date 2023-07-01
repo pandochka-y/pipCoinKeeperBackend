@@ -7,7 +7,7 @@ import { CreateBoardDto } from '../board/dto/create-board.dto'
 import { BoardService } from '../board/board.service'
 
 import { BUTTONS, BotName, TEXT } from './bot.constants'
-import { replyOrEdit } from './bot.utils'
+import { replyToMessage } from './bot.utils'
 import { MyContext } from './bot.interface'
 
 @Injectable()
@@ -26,7 +26,7 @@ export class BotService {
     ctx.session.user_id = user.id
     const buttons = [[BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)], [BUTTONS.BOARD_LIST]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    return await replyOrEdit(ctx, user.active_board ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
+    return await replyToMessage(ctx, user.active_board ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
   }
 
   async getBoards(ctx: MyContext) {

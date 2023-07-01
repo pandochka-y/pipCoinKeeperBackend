@@ -2,7 +2,7 @@ import { Markup } from 'telegraf'
 
 import { MyContext } from './bot.interface'
 import { BUTTONS } from './bot.constants'
-import { replyOrEdit } from './bot.utils'
+import { replyToMessage } from './bot.utils'
 
 export const OPERATIONS = {
   BOARD_MANAGEMENT: 'board_management',
@@ -19,7 +19,6 @@ export enum TYPE_ACCESS {
   BOARDS = 'boards',
   BOT = 'bot',
 }
-
 export const ACCESS_OPERATIONS = {
   [TYPE_ACCESS.BOARDS]: {
     [ROLES.ADMIN]: Object.values(OPERATIONS),
@@ -31,7 +30,8 @@ export const ACCESS_OPERATIONS = {
 } as const
 
 export function canActivate(
-  ctx: MyContext, role: string,
+  ctx: MyContext,
+  role: string,
   action: valueOf<typeof OPERATIONS>,
   type: valueOf<typeof TYPE_ACCESS> = TYPE_ACCESS.BOARDS,
 ) {
@@ -41,7 +41,7 @@ export function canActivate(
 export function messageAccessDenied(ctx: MyContext, text: string) {
   const buttons = [BUTTONS.BACK, BUTTONS.MAIN_MENU]
   const inlineKeyboard = Markup.inlineKeyboard(buttons)
-  return replyOrEdit(ctx, text, inlineKeyboard)
+  return replyToMessage(ctx, text, inlineKeyboard)
 }
 
 export type valueOf<T> = T[keyof T]

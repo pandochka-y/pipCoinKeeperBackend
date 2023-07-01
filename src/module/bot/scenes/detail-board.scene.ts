@@ -8,7 +8,7 @@ import { BoardUsersService } from '../../board-users/board-users.service'
 import { UsersService } from '../../users/users.service'
 import { BoardService } from '../../board/board.service'
 import { OPERATIONS, canActivate, messageAccessDenied } from '../bot.guards'
-import { replyOrEdit } from '../bot.utils'
+import { replyToMessage } from '../bot.utils'
 
 @Scene(SCENES.DETAIL_BOARD)
 export class DetailBoardScene {
@@ -17,7 +17,8 @@ export class DetailBoardScene {
     private readonly boardUsersService: BoardUsersService,
     private readonly userService: UsersService,
     private readonly boardService: BoardService,
-  ) {}
+  ) {
+  }
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: MyContext) {
@@ -28,8 +29,6 @@ export class DetailBoardScene {
       await messageAccessDenied(ctx, 'Доска не найдена или доступ к данной доске закрыт')
       return false
     }
-
-    ctx.scene.session.state.detail_board.role = boardUser.role.name
     ctx.scene.session.state.detail_board.board_user_id = boardUser.board_id
 
     const shouldBoardManage = canActivate(ctx, boardUser.role.name, OPERATIONS.BOARD_MANAGEMENT)
@@ -41,7 +40,7 @@ export class DetailBoardScene {
       [BUTTONS.BACK, BUTTONS.MAIN_MENU],
     ]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    await replyOrEdit(ctx, `Детальная: ${board.name}`, inlineKeyboard)
+    await replyToMessage(ctx, `Детальная: ${board.name}`, inlineKeyboard)
   }
 
   @Action(COMMANDS.BOARD_REPORT)

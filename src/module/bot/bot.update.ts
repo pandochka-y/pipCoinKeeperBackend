@@ -51,6 +51,9 @@ export class BotUpdate {
   async onGetDetailBoard(ctx: MyContext) {
     const board_id = ctx.match[1] || -1
     const state = addPrevScene(ctx)
-    return await ctx.scene.enter(SCENES.DETAIL_BOARD, { ...state, board_id })
+    const detail_board = {
+      board_id,
+    }
+    return await ctx.scene.enter(SCENES.DETAIL_BOARD, { ...state, detail_board })
   }
 }

@@ -15,7 +15,7 @@ export function createUserDtoFactory(ctx: MyContext): CreateUserTelegramDto {
   }
 }
 
-export async function replyOrEdit(
+export async function replyToMessage(
   ctx: MyContext,
   text: string,
   extra: ExtraEditMessageText,
