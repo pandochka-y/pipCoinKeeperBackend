@@ -37,10 +37,11 @@ export async function replyToMessage(
 
 export function addPrevScene(ctx: MyContext) {
   const current = ctx.session.current_scene
-  const state = ctx.scene.session.state
+  const state = ctx.scene.session.state || {}
   if (current)
     state.prevScene ? state.prevScene.push(current) : (state.prevScene = [current])
 
+  console.log('state addPrevScene', state)
   return state
 }
 

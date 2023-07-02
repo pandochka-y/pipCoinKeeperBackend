@@ -8,10 +8,10 @@ export interface MyContext extends BaseContext {
   session: Session
   scene: Scenes.SceneContextScene<MyContext, MySession>
   wizard: Scenes.WizardContextWizard<MyContext>
-  match: any
+  match: string
 }
 
-interface MySession extends Scenes.WizardSessionData {
+export interface MySession extends Scenes.WizardSessionData {
 
   // FIXME: think about structure, learn about state of the session
   state: {
@@ -19,6 +19,7 @@ interface MySession extends Scenes.WizardSessionData {
     detail_board?: {
       board_id?: number
       board_user_id?: number
+      roleName?: string
     }
   }
   create?: {

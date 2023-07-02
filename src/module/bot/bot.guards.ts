@@ -30,7 +30,6 @@ export const ACCESS_OPERATIONS = {
 } as const
 
 export function canActivate(
-  ctx: MyContext,
   role: string,
   action: valueOf<typeof OPERATIONS>,
   type: valueOf<typeof TYPE_ACCESS> = TYPE_ACCESS.BOARDS,

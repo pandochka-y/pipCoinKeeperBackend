@@ -19,8 +19,10 @@ async function bootstrap() {
     transform: true,
     transformOptions: { enableImplicitConversion: true },
   }))
-  const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('/api/docs', app, document)
+  const document = SwaggerModule.createDocument(app, config, {})
+  SwaggerModule.setup('/api/docs', app, document, {
+    jsonDocumentUrl: '/api/docs/swagger.json',
+  })
 
   await app.listen(PORT, () => {
     const url = `http://localhost:${PORT}`

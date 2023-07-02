@@ -7,8 +7,8 @@ import { BUTTONS, COMMANDS, SCENES } from '../bot.constants'
 import { BoardUsersService } from '../../board-users/board-users.service'
 import { UsersService } from '../../users/users.service'
 import { BoardService } from '../../board/board.service'
-import { OPERATIONS, canActivate, messageAccessDenied } from '../bot.guards'
-import { replyToMessage } from '../bot.utils'
+import { OPERATIONS, canActivate } from '../bot.guards'
+import { addPrevScene, replyToMessage } from '../bot.utils'
 
 @Scene(SCENES.DETAIL_BOARD)
 export class DetailBoardScene {
@@ -22,21 +22,17 @@ export class DetailBoardScene {
 
   @SceneEnter()
   async onSceneEnter(@Ctx() ctx: MyContext) {
-    const board_id = ctx.scene.session.state.detail_board.board_id
-    const user_id = await this.botService.getUserId(ctx)
-    const boardUser = await this.boardUsersService.getBoardUserByIds(board_id, user_id)
-    if (!boardUser) {
-      await messageAccessDenied(ctx, 'Доска не найдена или доступ к данной доске закрыт')
-      return false
-    }
-    ctx.scene.session.state.detail_board.board_user_id = boardUser.board_id
+    console.log('scene state', ctx.scene.state)
+    console.log('scene session state', ctx.scene.session.state)
+    const { board_id, roleName } = ctx.scene.session.state.detail_board
 
-    const shouldBoardManage = canActivate(ctx, boardUser.role.name, OPERATIONS.BOARD_MANAGEMENT)
-    const shouldPaymentManage = canActivate(ctx, boardUser.role.name, OPERATIONS.PAYMENT_MANAGE)
+    const canBoardManage = canActivate(roleName, OPERATIONS.BOARD_MANAGEMENT)
+    const canPaymentManage = canActivate(roleName, OPERATIONS.PAYMENT_MANAGE)
+
     const board = await this.boardService.getBoardById(board_id)
     const buttons = [
-      [BUTTONS.BOARD_REPORT, BUTTONS.BOARD_MANAGEMENT(shouldBoardManage)],
-      [BUTTONS.PAYMENT_MANAGEMENT(shouldPaymentManage)],
+      [BUTTONS.BOARD_REPORT, BUTTONS.BOARD_MANAGEMENT(canBoardManage)],
+      [BUTTONS.PAYMENT_MANAGEMENT(canPaymentManage)],
       [BUTTONS.BACK, BUTTONS.MAIN_MENU],
     ]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
@@ -45,7 +41,16 @@ export class DetailBoardScene {
 
   @Action(COMMANDS.BOARD_REPORT)
   async onReportAction(@Ctx() ctx: MyContext) {
-    await ctx.scene.enter(SCENES.BOARD_REPORT)
+    console.log('state onReportAction', ctx.scene.session.state)
+    const state = addPrevScene(ctx)
+    // FIXME: when changed state, will change ctx
+    state.detail_board.board_id = 21
+    await this.botService.guardEnterScene(
+      ctx,
+      SCENES.BOARD_REPORT,
+      state,
+      'доступ закрыт',
+    )
   }
 
   @Action(COMMANDS.PAYMENT_LIST)

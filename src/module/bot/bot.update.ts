@@ -38,22 +38,36 @@ export class BotUpdate {
 
   @Action(COMMANDS.BACK)
   async onBackAction(@Ctx() ctx: MyContext) {
-    if (!ctx.session.current_scene) {
+    console.log('state onBackAction', ctx.scene.session.state)
+    const { scene, state } = backToPrevScene(ctx)
+    console.log('states', scene, state)
+    if (!scene) {
       await this.botService.start(ctx)
       return
     }
 
-    const { scene, state } = backToPrevScene(ctx)
-    return await ctx.scene.enter(scene, state)
+    // FIXME: add on prev scene action
+    await this.botService.guardEnterScene(
+      ctx,
+      SCENES.DETAIL_BOARD,
+      state,
+      'Что-то пошло не так',
+    )
+    return await ctx.scene.enter(scene, state, true)
   }
 
   @Action(/detail-board\s(.*)/)
   async onGetDetailBoard(ctx: MyContext) {
-    const board_id = ctx.match[1] || -1
+    const board_id = Number(ctx.match[1]) || -1
     const state = addPrevScene(ctx)
-    const detail_board = {
-      board_id,
-    }
-    return await ctx.scene.enter(SCENES.DETAIL_BOARD, { ...state, detail_board })
+
+    console.log('state onGetDetailBoard', ctx.scene.session.state)
+    await this.botService.guardEnterScene(
+      ctx,
+      SCENES.DETAIL_BOARD,
+      { ...state, detail_board: { board_id } },
+      'Доска не найдена или доступ к данной доске закрыт',
+    )
+    // return await ctx.scene.enter(SCENES.DETAIL_BOARD, { ...state, detail_board: { board_id } })
   }
 }

@@ -23,12 +23,16 @@ export class BoardUsersService {
     return await this.boardUsersRepository.findAll({ where: { user_id }, attributes: ['board_id'] })
   }
 
-  async getBoardUserByIds(board_id: number, user_id: number) {
+  async getBoardUserByBoardAndUserId(board_id: number, user_id: number) {
     return await this.boardUsersRepository.findOne({ where: { board_id, user_id }, include: [{ model: Role }] })
   }
 
+  async getBoardUserById(id: number) {
+    return await this.boardUsersRepository.findByPk(id)
+  }
+
   async createBoardUser(dto: CreateBoardUserDto) {
-    const boardUser = await this.getBoardUserByIds(dto.board_id, dto.user_id)
+    const boardUser = await this.getBoardUserByBoardAndUserId(dto.board_id, dto.user_id)
     if (boardUser)
       throw new HttpException('User already added', HttpStatus.BAD_REQUEST)
 

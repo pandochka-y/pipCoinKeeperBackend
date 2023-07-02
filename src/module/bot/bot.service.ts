@@ -5,10 +5,13 @@ import { Markup, Telegraf } from 'telegraf'
 import { UsersService } from '../users/users.service'
 import { CreateBoardDto } from '../board/dto/create-board.dto'
 import { BoardService } from '../board/board.service'
+import { BoardUsersService } from '../board-users/board-users.service'
+import { BoardUser } from '../board-users/board-users.model'
 
-import { BUTTONS, BotName, TEXT } from './bot.constants'
+import { BUTTONS, BotName, SCENES, TEXT } from './bot.constants'
 import { replyToMessage } from './bot.utils'
-import { MyContext } from './bot.interface'
+import { MyContext, MySession } from './bot.interface'
+import { OPERATIONS, canActivate, messageAccessDenied, valueOf } from './bot.guards'
 
 @Injectable()
 export class BotService {
@@ -17,6 +20,7 @@ export class BotService {
     private readonly bot: Telegraf<MyContext>,
     private readonly usersService: UsersService,
     private readonly boardsService: BoardService,
+    private readonly boardUserService: BoardUsersService,
   ) {}
 
   async start(ctx: MyContext) {
@@ -63,5 +67,40 @@ export class BotService {
   async getUser(telegramId: number) {
     const user = await this.usersService.getUserByTelegramId(telegramId)
     return user
+  }
+
+  getBoardId(ctx: MyContext) {
+    return ctx.scene.session.state.detail_board.board_id
+  }
+
+  async guardAction(
+    board_user_id: number,
+    action: valueOf<typeof OPERATIONS>,
+  ) {
+    const boardUser = await this.boardUserService.getBoardUserById(board_user_id)
+    if (!boardUser)
+      return false
+    return canActivate(boardUser.role.name, action)
+  }
+
+  async guardEnterScene(ctx: MyContext, scene: valueOf<typeof SCENES>, initialState: MySession['state'], errorMsg: string) {
+    console.log('enter guard scene', initialState, scene)
+    let boardUser: BoardUser | null = null
+    const user_id = await this.getUserId(ctx)
+    const board_id = initialState.detail_board.board_id
+
+    console.log('state guardEnterScene', ctx.scene.session.state)
+    if (board_id)
+      boardUser = await this.boardUserService.getBoardUserByBoardAndUserId(board_id, user_id)
+    if (!boardUser) {
+      await messageAccessDenied(ctx, errorMsg)
+      return false
+    }
+
+    ctx.session.current_scene = scene
+    initialState.detail_board.roleName = boardUser.role.name
+    initialState.detail_board.board_user_id = boardUser.id
+    console.log('enter scene', scene)
+    ctx.scene.enter(scene, initialState)
   }
 }
