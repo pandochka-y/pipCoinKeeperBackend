@@ -10,16 +10,18 @@ import { BoardUsersModule } from '../board-users/board-users.module'
 import { BotService } from './bot.service'
 import { botMiddleware, botMiddlewareResponseTime } from './bot.middleware'
 import { BotUpdate } from './bot.update'
-import { BoardListScene } from './scenes/board-list.scene'
-import { CreateBoardScene } from './scenes/create-board.scene'
-import { DetailBoardScene } from './scenes/detail-board.scene'
-import { BoardManagementScene } from './scenes/board-management.scene'
-import { PaymentListScene } from './scenes/payment-list.scene'
-import { BoardReportScene } from './scenes/board-report.scene'
-import { CreatePaymentScene } from './scenes/create-payment.scene'
-import { PaymentManagementScene } from './scenes/payment-management.scene'
+import { BoardListScene } from './scenes/board-list/index.scene'
+import { CreateBoardScene } from './scenes/board-list/create-board.scene'
+import { DetailBoardScene } from './scenes/detail-board/index.scene'
+import { BoardManagementScene } from './scenes/detail-board/board-management/index.scene'
+import { PaymentListScene } from './scenes/detail-board/payments/payment-list.scene'
+import { BoardReportScene } from './scenes/detail-board/board-report/index.scene'
+import { CreatePaymentScene } from './scenes/detail-board/payments/create-payment.scene'
+import { PaymentManagementScene } from './scenes/detail-board/payments/index.scene'
 import { BotName } from './bot.constants'
 import { MyContext } from './bot.interface'
+import { BoardUsersScene } from './scenes/detail-board/board-management/board-users.scene'
+import { RemoveBoardUserScene } from './scenes/detail-board/board-management/remove-board-user.scene'
 
 @Module({
   providers: [
@@ -34,6 +36,8 @@ import { MyContext } from './bot.interface'
     BoardReportScene,
     CreatePaymentScene,
     PaymentManagementScene,
+    BoardUsersScene,
+    RemoveBoardUserScene,
   ],
 
   imports: [
@@ -42,10 +46,14 @@ import { MyContext } from './bot.interface'
       useFactory: () => ({
         token: process.env.BOT_TOKEN,
         include: [BotModule],
-        middlewares: [botMiddleware, botMiddlewareResponseTime],
-        launchOptions: {
-
-        },
+        middlewares: [
+          botMiddleware({
+            password: process.env.DATABASE_PASSWORD,
+            host: process.env.DATABASE_HOST,
+            port: parseInt(process.env.DATABASE_PORT),
+            database: process.env.DATABASE_SESSION_NAME,
+          }),
+          botMiddlewareResponseTime],
       }),
     }),
     UsersModule,

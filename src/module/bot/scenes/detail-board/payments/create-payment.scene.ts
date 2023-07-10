@@ -1,11 +1,11 @@
 import { Context, Message, Wizard, WizardStep } from 'nestjs-telegraf'
 
-import { SCENES } from '../bot.constants'
-import { BotService } from '../bot.service'
-import { MyContext } from '../bot.interface'
-import { CurrencyService } from '../../currency/currency.service'
-import { BoardUsersService } from '../../board-users/board-users.service'
-import { UsersService } from '../../users/users.service'
+import { SCENES } from '../../../bot.constants'
+import { BotService } from '../../../bot.service'
+import { MyContext } from '../../../bot.interface'
+import { CurrencyService } from '../../../../currency/currency.service'
+import { BoardUsersService } from '../../../../board-users/board-users.service'
+import { UsersService } from '../../../../users/users.service'
 
 @Wizard(SCENES.CREATE_PAYMENT)
 export class CreatePaymentScene {

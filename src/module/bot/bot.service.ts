@@ -25,12 +25,13 @@ export class BotService {
 
   async start(ctx: MyContext) {
     ctx.session.current_scene = undefined
-    // TODO: clear session
+    await ctx.scene.leave()
+    console.log('start scene session', ctx.scene.session)
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
     ctx.session.user_id = user.id
     const buttons = [[BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)], [BUTTONS.BOARD_LIST]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    return await replyToMessage(ctx, user.active_board ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
+    return await replyToMessage(ctx, (user.active_board_id && user.active_board) ? TEXT.BOARD_STATISTICS(user.active_board) : TEXT.START, inlineKeyboard)
   }
 
   async getBoards(ctx: MyContext) {
@@ -83,7 +84,7 @@ export class BotService {
     return canActivate(boardUser.role.name, action)
   }
 
-  async guardEnterScene(ctx: MyContext, scene: valueOf<typeof SCENES>, initialState: MySession['state'], errorMsg: string) {
+  async guardEnterBoardScene(ctx: MyContext, scene: valueOf<typeof SCENES>, initialState: MySession['state'], errorMsg = 'У вас нет прав для просмотра') {
     console.log('enter guard scene', initialState, scene)
     let boardUser: BoardUser | null = null
     const user_id = await this.getUserId(ctx)
@@ -92,6 +93,7 @@ export class BotService {
     console.log('state guardEnterScene', ctx.scene.session.state)
     if (board_id)
       boardUser = await this.boardUserService.getBoardUserByBoardAndUserId(board_id, user_id)
+
     if (!boardUser) {
       await messageAccessDenied(ctx, errorMsg)
       return false

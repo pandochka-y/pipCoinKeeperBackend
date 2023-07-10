@@ -1,13 +1,13 @@
 import { Context, Message, Wizard, WizardStep } from 'nestjs-telegraf'
 
-import { SCENES } from '../bot.constants'
-import { BotService } from '../bot.service'
-import { MyContext } from '../bot.interface'
-import { CreateBoardDto } from '../../board/dto/create-board.dto'
-import { CurrencyService } from '../../currency/currency.service'
-import { BoardUsersService } from '../../board-users/board-users.service'
-import { UsersService } from '../../users/users.service'
-import { CreateBoardUserDto } from '../../board-users/dto/create-board-user.dto'
+import { SCENES } from '../../bot.constants'
+import { BotService } from '../../bot.service'
+import { MyContext } from '../../bot.interface'
+import { CreateBoardDto } from '../../../board/dto/create-board.dto'
+import { CurrencyService } from '../../../currency/currency.service'
+import { BoardUsersService } from '../../../board-users/board-users.service'
+import { UsersService } from '../../../users/users.service'
+import { CreateBoardUserDto } from '../../../board-users/dto/create-board-user.dto'
 
 @Wizard(SCENES.CREATE_BOARD)
 export class CreateBoardScene {

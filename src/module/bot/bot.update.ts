@@ -38,22 +38,18 @@ export class BotUpdate {
 
   @Action(COMMANDS.BACK)
   async onBackAction(@Ctx() ctx: MyContext) {
-    console.log('state onBackAction', ctx.scene.session.state)
     const { scene, state } = backToPrevScene(ctx)
-    console.log('states', scene, state)
     if (!scene) {
+      await ctx.scene.leave()
       await this.botService.start(ctx)
       return
     }
 
-    // FIXME: add on prev scene action
-    await this.botService.guardEnterScene(
+    await this.botService.guardEnterBoardScene(
       ctx,
-      SCENES.DETAIL_BOARD,
+      scene,
       state,
-      'Что-то пошло не так',
     )
-    return await ctx.scene.enter(scene, state, true)
   }
 
   @Action(/detail-board\s(.*)/)
@@ -62,7 +58,7 @@ export class BotUpdate {
     const state = addPrevScene(ctx)
 
     console.log('state onGetDetailBoard', ctx.scene.session.state)
-    await this.botService.guardEnterScene(
+    await this.botService.guardEnterBoardScene(
       ctx,
       SCENES.DETAIL_BOARD,
       { ...state, detail_board: { board_id } },

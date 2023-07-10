@@ -21,6 +21,13 @@ export const COMMANDS = {
   CREATE_PAYMENT: 'create_payment',
   PAYMENT_MANAGEMENT: 'payment',
   EDIT_CURRENCY: 'edit_currency',
+  BOARD_USERS: 'board_users',
+  BOARD_USERS_LIST: 'board_users_list',
+  ADD_CATEGORY: 'add_category',
+  ADD_TO_FAVORITE: 'add_to_favorite',
+  REMOVE_FROM_FAVORITE: 'remove_from_favorite',
+  ADD_BOARD_USER: 'add_board_user',
+  REMOVE_BOARD_USER: 'remove_board_user',
 }
 
 export const SCENES = {
@@ -32,11 +39,16 @@ export const SCENES = {
   CREATE_PAYMENT: 'create_payment',
   PAYMENT_LIST: 'payment_list',
   PAYMENT_MANAGEMENT: 'payment',
+  BOARD_USERS: 'board_users',
+  BOARD_USERS_LIST: 'board_users_list',
+  ADD_CATEGORY: 'add_category',
+  ADD_BOARD_USER: 'add_board_user',
+  REMOVE_BOARD_USER: 'remove_board_user',
 }
 
 export const BUTTONS = {
   CREATE_BOARD: Markup.button.callback('+ Создать доску', COMMANDS.CREATE_BOARD),
-  BACK: Markup.button.callback('⬅ Назад', COMMANDS.BACK),
+  BACK: (value = 'Назад') => Markup.button.callback(`⬅ ${value}`, COMMANDS.BACK),
   BOARD_LIST: Markup.button.callback('🗓 Доски учета', COMMANDS.BOARD_LIST),
   TO_DETAIL_BOARD: (board: Board) => Markup.button.callback(`🗓 Доска ${board.name || ''}`, COMMANDS.TO_DETAIL_BOARD(board.id)),
   MAIN_MENU: Markup.button.callback('🏠 Главное меню', COMMANDS.MAIN_MENU),
@@ -50,6 +62,12 @@ export const BUTTONS = {
   CREATE_PAYMENT: (shouldAccess = false) => Markup.button.callback('💳 Добавить платеж', COMMANDS.CREATE_PAYMENT, !shouldAccess),
   PAYMENT_MANAGEMENT: (shouldAccess = false) => Markup.button.callback('💳 Платежи', COMMANDS.PAYMENT_MANAGEMENT, !shouldAccess),
   EDIT_CURRENCY: (shouldAccess = false) => Markup.button.callback('🔄 Изменить валюту', COMMANDS.EDIT_CURRENCY, !shouldAccess),
+  BOARD_USERS: (shouldAccess = false) => Markup.button.callback('👨‍🔧 Участники', COMMANDS.BOARD_USERS, !shouldAccess),
+  ADD_CATEGORY: (shouldAccess = false) => Markup.button.callback('📝 Добавить категорию', COMMANDS.ADD_CATEGORY, !shouldAccess),
+  ADD_TO_FAVORITE: (shouldAccess = false) => Markup.button.callback('❤️ Добавить в избранное', COMMANDS.ADD_TO_FAVORITE, !shouldAccess),
+  REMOVE_FROM_FAVORITE: (shouldAccess = false) => Markup.button.callback('❌ Удалить из избранного', COMMANDS.REMOVE_FROM_FAVORITE, !shouldAccess),
+  ADD_BOARD_USER: (shouldAccess = false) => Markup.button.callback('➕ Добавить участника', COMMANDS.ADD_BOARD_USER, !shouldAccess),
+  REMOVE_BOARD_USER: (shouldAccess = false) => Markup.button.callback('➖ Удалить участника', COMMANDS.REMOVE_BOARD_USER, !shouldAccess),
 }
 
 export const ACCESS_OPERATIONS = {

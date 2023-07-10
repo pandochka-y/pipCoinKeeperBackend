@@ -1,10 +1,10 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf'
 import { Markup } from 'telegraf'
 
-import { BotService } from '../bot.service'
-import { MyContext } from '../bot.interface'
-import { BUTTONS, COMMANDS, SCENES, TEXT } from '../bot.constants'
-import { replyToMessage } from '../bot.utils'
+import { BotService } from '../../../bot.service'
+import { MyContext } from '../../../bot.interface'
+import { BUTTONS, COMMANDS, SCENES, TEXT } from '../../../bot.constants'
+import { replyToMessage } from '../../../bot.utils'
 
 @Scene(SCENES.PAYMENT_LIST)
 export class PaymentListScene {
@@ -16,7 +16,7 @@ export class PaymentListScene {
   async onSceneEnter(ctx: MyContext) {
     const user = await this.botService.getUser(ctx.from.id)
     // FIXME: user.role to boardUser
-    const buttons = [(user.role?.length ? [BUTTONS.BOARD_LIST, BUTTONS.CREATE_BOARD] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK]]
+    const buttons = [(user.role?.length ? [BUTTONS.BOARD_LIST, BUTTONS.CREATE_BOARD] : [BUTTONS.CREATE_BOARD]), [BUTTONS.BACK()]]
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
     await replyToMessage(ctx, TEXT.BOARDS, inlineKeyboard)
     // await this.botService.getBoards(ctx)

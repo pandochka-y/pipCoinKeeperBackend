@@ -1,11 +1,11 @@
 import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf'
 
-import { BotService } from '../bot.service'
-import { MyContext } from '../bot.interface'
-import { COMMANDS, SCENES } from '../bot.constants'
-import { BoardUsersService } from '../../board-users/board-users.service'
-import { UsersService } from '../../users/users.service'
-import { BoardService } from '../../board/board.service'
+import { BotService } from '../../../bot.service'
+import { MyContext } from '../../../bot.interface'
+import { COMMANDS, SCENES } from '../../../bot.constants'
+import { BoardUsersService } from '../../../../board-users/board-users.service'
+import { UsersService } from '../../../../users/users.service'
+import { BoardService } from '../../../../board/board.service'
 
 @Scene(SCENES.PAYMENT_MANAGEMENT)
 export class PaymentManagementScene {

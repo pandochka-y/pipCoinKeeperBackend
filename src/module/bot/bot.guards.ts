@@ -38,7 +38,7 @@ export function canActivate(
 }
 
 export function messageAccessDenied(ctx: MyContext, text: string) {
-  const buttons = [BUTTONS.BACK, BUTTONS.MAIN_MENU]
+  const buttons = [BUTTONS.BACK(), BUTTONS.MAIN_MENU]
   const inlineKeyboard = Markup.inlineKeyboard(buttons)
   return replyToMessage(ctx, text, inlineKeyboard)
 }
