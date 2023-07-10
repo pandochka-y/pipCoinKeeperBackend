@@ -1,0 +1,20 @@
+
+
+
+
+main:
+  buttons:
+    favorite_board: Избранная доска
+
+
+detail_board:
+  buttons:
+    report: Отчёт
+    board_management: Управление
+
+
+
+
+
+errors:
+  test: ru test locales ${test}

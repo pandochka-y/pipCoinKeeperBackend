@@ -1,3 +1,5 @@
+import * as path from 'node:path'
+
 import { Module } from '@nestjs/common'
 import { InjectBot, TelegrafModule } from 'nestjs-telegraf'
 import { Telegraf } from 'telegraf'
@@ -6,9 +8,10 @@ import { UsersModule } from '../users/users.module'
 import { BoardModule } from '../board/board.module'
 import { CurrencyModule } from '../currency/currency.module'
 import { BoardUsersModule } from '../board-users/board-users.module'
+import { CategoriesModule } from '../categories/categories.module'
 
 import { BotService } from './bot.service'
-import { botMiddleware, botMiddlewareResponseTime } from './bot.middleware'
+import { botMiddleware, botMiddlewareI18n, botMiddlewareResponseTime } from './bot.middleware'
 import { BotUpdate } from './bot.update'
 import { BoardListScene } from './scenes/board-list/index.scene'
 import { CreateBoardScene } from './scenes/board-list/create-board.scene'
@@ -22,6 +25,8 @@ import { BotName } from './bot.constants'
 import { MyContext } from './bot.interface'
 import { BoardUsersScene } from './scenes/detail-board/board-management/board-users.scene'
 import { RemoveBoardUserScene } from './scenes/detail-board/board-management/remove-board-user.scene'
+import { CategoryManagementScene } from './scenes/detail-board/board-management/category-management/index.scene'
+import { CreateCategoryScene } from './scenes/detail-board/board-management/category-management/create-category.scene'
 
 @Module({
   providers: [
@@ -38,6 +43,8 @@ import { RemoveBoardUserScene } from './scenes/detail-board/board-management/rem
     PaymentManagementScene,
     BoardUsersScene,
     RemoveBoardUserScene,
+    CategoryManagementScene,
+    CreateCategoryScene,
   ],
 
   imports: [
@@ -53,13 +60,23 @@ import { RemoveBoardUserScene } from './scenes/detail-board/board-management/rem
             port: parseInt(process.env.DATABASE_PORT),
             database: process.env.DATABASE_SESSION_NAME,
           }),
-          botMiddlewareResponseTime],
+          botMiddlewareResponseTime,
+          botMiddlewareI18n({
+            useSession: true,
+            defaultLanguageOnMissing: true,
+            directory: path.resolve(__dirname, '../../i18n/locales'),
+            sessionName: process.env.DATABASE_SESSION_NAME,
+            templateData: {},
+            defaultLanguage: 'ru',
+          }).middleware(),
+        ],
       }),
     }),
     UsersModule,
     BoardModule,
     CurrencyModule,
     BoardUsersModule,
+    CategoriesModule,
   ],
 })
 export class BotModule {

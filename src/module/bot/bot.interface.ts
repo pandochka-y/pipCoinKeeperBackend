@@ -1,5 +1,6 @@
 import { Context as BaseContext, Scenes } from 'telegraf'
 import { Update } from 'telegraf/typings/core/types/typegram'
+import { I18nContext } from '@esindger/telegraf-i18n'
 
 import { CreateBoardDto } from '../board/dto/create-board.dto'
 
@@ -9,6 +10,7 @@ export interface MyContext extends BaseContext {
   scene: Scenes.SceneContextScene<MyContext, MySession>
   wizard: Scenes.WizardContextWizard<MyContext>
   match: string
+  i18n: I18nContext
 }
 
 export interface MySession extends Scenes.WizardSessionData {

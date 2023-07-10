@@ -43,6 +43,10 @@ export class UsersService {
     return await this.userRepository.update(dto, { where: { id } })
   }
 
+  async getUserById(id: number) {
+    return await this.userRepository.findOne({ where: { id } })
+  }
+
   async getUserByEmail(email: string) {
     return await this.userRepository.findOne({ where: { email } })
   }

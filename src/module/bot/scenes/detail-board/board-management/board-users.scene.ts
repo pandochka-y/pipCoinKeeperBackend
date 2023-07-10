@@ -4,31 +4,29 @@ import { Markup } from 'telegraf'
 import { BotService } from '../../../bot.service'
 import { MyContext } from '../../../bot.interface'
 import { BUTTONS, COMMANDS, SCENES } from '../../../bot.constants'
-import { BoardUsersService } from '../../../../board-users/board-users.service'
-import { UsersService } from '../../../../users/users.service'
-import { BoardService } from '../../../../board/board.service'
 import { getState, replyToMessage } from '../../../bot.utils'
 
 @Scene(SCENES.BOARD_USERS)
 export class BoardUsersScene {
   constructor(
     private readonly botService: BotService,
-    private readonly boardUsersService: BoardUsersService,
-    private readonly userService: UsersService,
-    private readonly boardService: BoardService,
+    // private readonly boardUsersService: BoardUsersService,
+    // private readonly userService: UsersService,
+    // private readonly boardService: BoardService,
   ) {}
 
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
-    const { board_id, roleName } = ctx.scene.session.state.detail_board
-    const board = await this.boardService.getBoardById(board_id)
-    const user = await this.botService.getUser(ctx.from.id)
+    // const { board_id, roleName } = ctx.scene.session.state.detail_board
+    const board = await this.botService.getCurrentBoard(ctx)
+    const user = await this.botService.getCurrentUser(ctx)
 
     const button = [
       [BUTTONS.ADD_BOARD_USER(true)],
       [BUTTONS.REMOVE_BOARD_USER(true)],
       [BUTTONS.BACK(), BUTTONS.MAIN_MENU],
     ]
+
     const inlineKeyboard = Markup.inlineKeyboard(button)
     await replyToMessage(ctx, `Участники доски ${board.name}`, inlineKeyboard)
   }

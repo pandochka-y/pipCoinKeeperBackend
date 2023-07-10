@@ -19,6 +19,7 @@ export enum TYPE_ACCESS {
   BOARDS = 'boards',
   BOT = 'bot',
 }
+
 export const ACCESS_OPERATIONS = {
   [TYPE_ACCESS.BOARDS]: {
     [ROLES.ADMIN]: Object.values(OPERATIONS),

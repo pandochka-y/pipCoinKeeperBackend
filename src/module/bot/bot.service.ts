@@ -26,7 +26,7 @@ export class BotService {
   async start(ctx: MyContext) {
     ctx.session.current_scene = undefined
     await ctx.scene.leave()
-    console.log('start scene session', ctx.scene.session)
+    console.log('I18n:', ctx.i18n.t('errors.test', { test: '3333' }))
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
     ctx.session.user_id = user.id
     const buttons = [[BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)], [BUTTONS.BOARD_LIST]]
@@ -65,13 +65,19 @@ export class BotService {
     return user.id
   }
 
-  async getUser(telegramId: number) {
-    const user = await this.usersService.getUserByTelegramId(telegramId)
+  async getCurrentUser(ctx: MyContext) {
+    const user_id = await this.getUserId(ctx)
+    const user = await this.usersService.getUserById(user_id)
     return user
   }
 
   getBoardId(ctx: MyContext) {
-    return ctx.scene.session.state.detail_board.board_id
+    return ctx.scene.session.state.detail_board.board_id || -1
+  }
+
+  getCurrentBoard(ctx: MyContext) {
+    const board_id = this.getBoardId(ctx)
+    return this.boardsService.getBoardById(board_id)
   }
 
   async guardAction(

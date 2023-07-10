@@ -18,6 +18,7 @@ import { CategoryLimit } from './categories-limit.model'
   imports: [
     SequelizeModule.forFeature([Category, Board, User, MerchantCode, CategoryMC, Operation, CategoryLimit]),
   ],
+  exports: [CategoriesService],
 })
 
 export class CategoriesModule {

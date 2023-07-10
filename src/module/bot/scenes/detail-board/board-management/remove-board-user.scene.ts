@@ -20,9 +20,9 @@ export class RemoveBoardUserScene {
 
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
-    const { board_id } = ctx.scene.session.state.detail_board
-    const board = await this.boardService.getBoardById(board_id)
-    const user = await this.botService.getUser(ctx.from.id)
+    // const { board_id } = ctx.scene.session.state.detail_board
+    const board = await this.botService.getCurrentBoard(ctx)
+    const user = await this.botService.getCurrentUser(ctx)
 
     const button = [
       [BUTTONS.ADD_BOARD_USER(true)],

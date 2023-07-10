@@ -18,8 +18,12 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    //    "typeRoots": [
-//      "src/types"
-//    ]
+    "assets": [
+      {
+        "include": "./src/i18n/**/*",
+        "watchAssets": true,
+        "outDir": "dist/"
+      }
+    ]
   }
 }

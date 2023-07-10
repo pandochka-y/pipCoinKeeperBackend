@@ -26,7 +26,7 @@ export class CreateBoardScene {
 
   @WizardStep(2)
   async step1(@Message('text') text: string, @Context() ctx: MyContext) {
-    const user = await this.botService.getUser(ctx.from.id)
+    const user = await this.botService.getCurrentUser(ctx)
     const shouldBeFavorite = !user.active_board_id
 
     ctx.scene.session.create.board = {

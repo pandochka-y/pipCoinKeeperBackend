@@ -1,20 +1,21 @@
 import { Action, Scene, SceneEnter } from 'nestjs-telegraf'
 import { Markup } from 'telegraf'
 
-import { BotService } from '../../../bot.service'
-import { MyContext } from '../../../bot.interface'
-import { BUTTONS, COMMANDS, SCENES } from '../../../bot.constants'
-import { BoardUsersService } from '../../../../board-users/board-users.service'
-import { UsersService } from '../../../../users/users.service'
-import { addPrevScene, getState, replyToMessage } from '../../../bot.utils'
+import { BotService } from '../../../../bot.service'
+import { MyContext } from '../../../../bot.interface'
+import { BUTTONS, COMMANDS, SCENES } from '../../../../bot.constants'
+import { BoardUsersService } from '../../../../../board-users/board-users.service'
+import { UsersService } from '../../../../../users/users.service'
+import { BoardService } from '../../../../../board/board.service'
+import { addPrevScene, getState, replyToMessage } from '../../../../bot.utils'
 
-@Scene(SCENES.BOARD_MANAGEMENT)
-export class BoardManagementScene {
+@Scene(SCENES.CATEGORY_MANAGEMENT)
+export class CategoryManagementScene {
   constructor(
     private readonly botService: BotService,
     private readonly boardUsersService: BoardUsersService,
     private readonly userService: UsersService,
-    // private readonly boardService: BoardService,
+    private readonly boardService: BoardService,
   ) {}
 
   @SceneEnter()
@@ -24,14 +25,12 @@ export class BoardManagementScene {
     const user = await this.botService.getCurrentUser(ctx)
 
     const button = [
-      [BUTTONS.BOARD_USERS(true)],
-      [BUTTONS.EDIT_CURRENCY(true)],
-      [BUTTONS.CATEGORY_MANAGEMENT(true)],
-      [user.active_board_id === board_id ? BUTTONS.REMOVE_FROM_FAVORITE(true) : BUTTONS.ADD_TO_FAVORITE(true)],
+      [BUTTONS.CREATE_CATEGORY(true)],
+      [BUTTONS.REMOVE_CATEGORY(true)],
       [BUTTONS.BACK(), BUTTONS.MAIN_MENU],
     ]
     const inlineKeyboard = Markup.inlineKeyboard(button)
-    await replyToMessage(ctx, `Управление доской: ${board.name}`, inlineKeyboard)
+    await replyToMessage(ctx, `Управление категориями доски: ${board.name}`, inlineKeyboard)
   }
 
   @Action(COMMANDS.BOARD_USERS)
@@ -42,17 +41,6 @@ export class BoardManagementScene {
       SCENES.BOARD_USERS,
       state,
       'У вас нет прав для просмотра участников',
-    )
-  }
-
-  @Action(COMMANDS.CATEGORY_MANAGEMENT)
-  async onCategoryManagement(ctx: MyContext) {
-    const state = addPrevScene(ctx)
-    await this.botService.guardEnterBoardScene(
-      ctx,
-      SCENES.CATEGORY_MANAGEMENT,
-      state,
-      'У вас нет прав для просмотра категорий',
     )
   }
 
@@ -81,6 +69,17 @@ export class BoardManagementScene {
       SCENES.BOARD_MANAGEMENT,
       state,
       'У вас нет прав для управления доской',
+    )
+  }
+
+  @Action(COMMANDS.CREATE_CATEGORY)
+  async onCreateCategory(ctx: MyContext) {
+    const state = addPrevScene(ctx)
+    await this.botService.guardEnterBoardScene(
+      ctx,
+      SCENES.CREATE_CATEGORY,
+      state,
+      'У вас нет прав для создания категории',
     )
   }
 

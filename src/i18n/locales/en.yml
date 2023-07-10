@@ -1,0 +1,11 @@
+detail_board:
+  buttons:
+    board_management: Control
+    report: Report
+    
+errors:
+  test: en test locales ${test}
+
+main:
+  buttons:
+    favorite_board: Featured Board
