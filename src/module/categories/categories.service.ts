@@ -5,6 +5,7 @@ import { Op } from 'sequelize'
 import { Category } from './categories.model'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { CategoryLimit } from './categories-limit.model'
+import { GetCategoryListDto } from './dto/get-category-list.dto'
 
 @Injectable()
 export class CategoriesService {
@@ -17,13 +18,19 @@ export class CategoriesService {
     return await this.categoryService.create({ name: dto.name, board_id: dto.board_id })
   }
 
-  async getAllBoardCategories(board_id: number) {
-    return await this.categoryService.findAll({
+  async getAllBoardCategories(dto: GetCategoryListDto) {
+    console.log('dto', dto)
+    return await this.categoryService.findAndCountAll({
       where: {
         board_id: {
-          [Op.or]: [board_id, null],
+          [Op.or]: [dto.board_id, null],
         },
       },
+      order: [
+        ['name', 'ASC'],
+      ],
+      limit: dto.limit,
+      offset: dto.offset,
     })
   }
 

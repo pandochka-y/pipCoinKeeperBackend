@@ -12,6 +12,7 @@ export class CreateCategoryScene {
     private readonly categoryService: CategoriesService,
   ) {}
 
+  // FIXME: double request
   @WizardStep(1)
   async step0(@Context() ctx: MyContext) {
     await ctx.reply('Введите название категории:')
@@ -19,7 +20,7 @@ export class CreateCategoryScene {
   }
 
   @WizardStep(2)
-  async step1(@Message('text') text: string, @Context() ctx: MyContext) {
+  async step121(@Message('text') text: string, @Context() ctx: MyContext) {
     const nameCategory = text.trim()
     const board_id = this.botService.getBoardId(ctx)
     try {
@@ -27,7 +28,7 @@ export class CreateCategoryScene {
       await ctx.reply(`Категория ${category.name} создана`)
     }
     catch (e) {
-
+      console.log(e)
     }
     ctx.session.messageId = undefined
     await this.botService.start(ctx)

@@ -7,7 +7,7 @@ import { BUTTONS, COMMANDS, SCENES } from '../../../../bot.constants'
 import { BoardUsersService } from '../../../../../board-users/board-users.service'
 import { UsersService } from '../../../../../users/users.service'
 import { BoardService } from '../../../../../board/board.service'
-import { addPrevScene, getState, replyToMessage } from '../../../../bot.utils'
+import { addPrevScene, replyToMessage } from '../../../../bot.utils'
 
 @Scene(SCENES.CATEGORY_MANAGEMENT)
 export class CategoryManagementScene {
@@ -26,50 +26,11 @@ export class CategoryManagementScene {
 
     const button = [
       [BUTTONS.CREATE_CATEGORY(true)],
-      [BUTTONS.REMOVE_CATEGORY(true)],
+      [BUTTONS.CATEGORY_LIST(true)],
       [BUTTONS.BACK(), BUTTONS.MAIN_MENU],
     ]
     const inlineKeyboard = Markup.inlineKeyboard(button)
     await replyToMessage(ctx, `Управление категориями доски: ${board.name}`, inlineKeyboard)
-  }
-
-  @Action(COMMANDS.BOARD_USERS)
-  async onBoardUsers(ctx: MyContext) {
-    const state = addPrevScene(ctx)
-    await this.botService.guardEnterBoardScene(
-      ctx,
-      SCENES.BOARD_USERS,
-      state,
-      'У вас нет прав для просмотра участников',
-    )
-  }
-
-  @Action(COMMANDS.REMOVE_FROM_FAVORITE)
-  async onRemoveFromFavorite(ctx: MyContext) {
-    const user_id = await this.botService.getUserId(ctx)
-    await this.userService.removeActiveBoard(user_id)
-    const state = getState(ctx)
-    await this.botService.guardEnterBoardScene(
-      ctx,
-      SCENES.BOARD_MANAGEMENT,
-      state,
-      'У вас нет прав для управления доской',
-    )
-  }
-
-  @Action(COMMANDS.ADD_TO_FAVORITE)
-  async onAddToFavorite(ctx: MyContext) {
-    const { board_id } = ctx.scene.session.state.detail_board
-    const user_id = await this.botService.getUserId(ctx)
-    await this.userService.setActiveBoard(user_id, board_id)
-    const state = getState(ctx)
-
-    await this.botService.guardEnterBoardScene(
-      ctx,
-      SCENES.BOARD_MANAGEMENT,
-      state,
-      'У вас нет прав для управления доской',
-    )
   }
 
   @Action(COMMANDS.CREATE_CATEGORY)
@@ -83,8 +44,14 @@ export class CategoryManagementScene {
     )
   }
 
-  @Action(COMMANDS.CREATE_BOARD)
-  async onCreateBoard(ctx: MyContext) {
-    await ctx.scene.enter(SCENES.CREATE_BOARD)
+  @Action(COMMANDS.CATEGORY_LIST)
+  async onCategoryList(ctx: MyContext) {
+    const state = addPrevScene(ctx)
+    await this.botService.guardEnterBoardScene(
+      ctx,
+      SCENES.CATEGORY_LIST,
+      state,
+      'У вас нет прав для просмотра категорий',
+    )
   }
 }

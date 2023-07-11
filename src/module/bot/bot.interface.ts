@@ -23,8 +23,8 @@ export interface MySession extends Scenes.WizardSessionData {
       board_user_id?: number
       roleName?: string
     }
+    current_page?: number
   }
-  test: string
   create?: {
     board: {
       data: Partial<CreateBoardDto>

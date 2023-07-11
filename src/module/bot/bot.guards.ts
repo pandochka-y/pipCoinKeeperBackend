@@ -2,7 +2,7 @@ import { Markup } from 'telegraf'
 
 import { MyContext } from './bot.interface'
 import { BUTTONS } from './bot.constants'
-import { replyToMessage } from './bot.utils'
+import { replyToMessage, valueOf } from './bot.utils'
 
 export const OPERATIONS = {
   BOARD_MANAGEMENT: 'board_management',
@@ -43,5 +43,3 @@ export function messageAccessDenied(ctx: MyContext, text: string) {
   const inlineKeyboard = Markup.inlineKeyboard(buttons)
   return replyToMessage(ctx, text, inlineKeyboard)
 }
-
-export type valueOf<T> = T[keyof T]

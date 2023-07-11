@@ -2,8 +2,10 @@ import { ExtraEditMessageText } from 'telegraf/typings/telegram-types'
 import { Markup } from 'telegraf'
 
 import { CreateUserTelegramDto } from '../users/dto/create-user.dto'
+import { GetCategoryListDto } from '../categories/dto/get-category-list.dto'
 
-import { MyContext } from './bot.interface'
+import { MyContext, MySession } from './bot.interface'
+import { SCENES } from './bot.constants'
 
 export function createUserDtoFactory(ctx: MyContext): CreateUserTelegramDto {
   return {
@@ -35,8 +37,8 @@ export async function replyToMessage(
   ctx.session.messageId = reply.message_id
 }
 
-export function getState(ctx: MyContext) {
-  return ctx.scene.session.state || {}
+export function getState(ctx: MyContext): MySession['state'] {
+  return ctx.scene.session.state || {} as MySession['state']
 }
 
 export function addPrevScene(ctx: MyContext) {
@@ -60,4 +62,89 @@ export function getButtonList<T>(
   button: (obj: T) => ReturnType<typeof Markup.button.callback>,
 ) {
   return items.map(item => [button(item)])
+}
+
+export type valueOf<T> = T[keyof T]
+
+export function _getCurrentPage(ctx: MyContext, scene: valueOf<typeof SCENES>) {
+  const state = getState(ctx)
+  const currentScene = ctx.session?.current_scene
+  const currentPage = scene === currentScene ? state?.current_page : 1
+  return currentPage || 1
+}
+
+// function _setPagesLimit(limit: number)
+
+export function getInfoNavigation(ctx: MyContext, scene: valueOf<typeof SCENES>) {
+  let shouldPrev = false
+  const shouldNext = false
+  const test = () => shouldPrev
+  const currentPage = _getCurrentPage(ctx, scene)
+  // const { limit } = NAVIGATIONS_RULES(scene)
+  const limit = 10
+
+  function getCountPages(countItems: number) {
+    shouldPrev = true
+    const countPages = Math.ceil(countItems / limit)
+  }
+
+  return { currentPage, limit, getCountPages, test }
+}
+
+export class Pagination {
+  currentPage: number
+  ctx: MyContext
+  scene: valueOf<typeof SCENES>
+  countItems = 0
+  countPages = 1
+  shouldNext = false
+  shouldPrev = false
+  dto: GetCategoryListDto
+  default: GetCategoryListDto = {
+    offset: 0,
+    limit: 10,
+    board_id: -1,
+    orderBy: 'id',
+    order: 'ASC',
+  }
+
+  constructor(ctx: MyContext, scene: valueOf<typeof SCENES>, dto?: Partial<GetCategoryListDto>) {
+    this.ctx = ctx
+    this.scene = scene
+    this.dto = {
+      ...this.default,
+      ...dto,
+    }
+    this.getCurrentPage()
+    this.setOffset()
+  }
+
+  private getCurrentPage() {
+    const state = getState(this.ctx)
+    const currentScene = this.ctx.session?.current_scene
+    const currentPage = this.scene === currentScene ? state?.current_page : 1
+    state.current_page = currentPage || 1
+    console.log('currentPage', currentPage)
+    this.currentPage = state.current_page
+  }
+
+  private setOffset() {
+    this.dto.offset = (this.currentPage - 1) * this.dto.limit
+  }
+
+  private refreshNavigation() {
+    this.shouldPrev = this.currentPage > 1
+    this.shouldNext = this.countPages > this.currentPage
+  }
+
+  private setCountPages() {
+    this.countPages = Math.ceil(this.countItems / this.dto.limit)
+    console.log('this.countPages', this.countPages, this.countItems)
+    this.refreshNavigation()
+  }
+
+  public setCountItems(countItems: number) {
+    this.countItems = countItems
+    this.setCountPages()
+  }
 }

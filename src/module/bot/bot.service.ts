@@ -9,9 +9,9 @@ import { BoardUsersService } from '../board-users/board-users.service'
 import { BoardUser } from '../board-users/board-users.model'
 
 import { BUTTONS, BotName, SCENES, TEXT } from './bot.constants'
-import { replyToMessage } from './bot.utils'
+import { replyToMessage, valueOf } from './bot.utils'
 import { MyContext, MySession } from './bot.interface'
-import { OPERATIONS, canActivate, messageAccessDenied, valueOf } from './bot.guards'
+import { OPERATIONS, canActivate, messageAccessDenied } from './bot.guards'
 
 @Injectable()
 export class BotService {
@@ -26,7 +26,7 @@ export class BotService {
   async start(ctx: MyContext) {
     ctx.session.current_scene = undefined
     await ctx.scene.leave()
-    console.log('I18n:', ctx.i18n.t('errors.test', { test: '3333' }))
+    console.log('example I18n:', ctx.i18n.t('errors.test', { test: '3333' }))
     const user = await this.usersService.getUserByTelegramId(ctx.from.id)
     ctx.session.user_id = user.id
     const buttons = [[BUTTONS.TO_ACTIVE_BOARD(user.active_board_id)], [BUTTONS.BOARD_LIST]]
@@ -91,7 +91,6 @@ export class BotService {
   }
 
   async guardEnterBoardScene(ctx: MyContext, scene: valueOf<typeof SCENES>, initialState: MySession['state'], errorMsg = 'У вас нет прав для просмотра') {
-    console.log('enter guard scene', initialState, scene)
     let boardUser: BoardUser | null = null
     const user_id = await this.getUserId(ctx)
     const board_id = initialState.detail_board.board_id

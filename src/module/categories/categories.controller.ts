@@ -4,6 +4,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CategoriesService } from './categories.service'
 import { Category } from './categories.model'
 import { CreateCategoryDto } from './dto/create-category.dto'
+import { GetCategoryListDto } from './dto/get-category-list.dto'
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -14,8 +15,8 @@ export class CategoriesController {
   @ApiOperation({ summary: 'Get all board categories' })
   @ApiResponse({ status: 200, description: 'Get all board categories', type: [Category] })
   @Get()
-  getAllBoardCategories(@Query('board') board_id: number) {
-    return this.categoriesService.getAllBoardCategories(board_id)
+  getAllBoardCategories(@Query() dto: GetCategoryListDto) {
+    return this.categoriesService.getAllBoardCategories(dto)
   }
 
   @ApiOperation({ summary: 'Create category' })
