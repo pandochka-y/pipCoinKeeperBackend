@@ -22,7 +22,6 @@ export class BotUpdate {
     const createUserDto = createUserDtoFactory(ctx)
     await this.usersService.welcomeTelegramUser(createUserDto)
     ctx.session.messageId = undefined
-    // TODO: add remove session
     await this.botService.start(ctx)
   }
 
@@ -45,25 +44,23 @@ export class BotUpdate {
       return
     }
 
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       scene,
       state,
     )
   }
 
-  @Action(/detail-board\s(.*)/)
+  @Action(COMMANDS.TO_DETAIL_BOARD_REGEX)
   async onGetDetailBoard(ctx: MyContext) {
-    const board_id = Number(ctx.match[1]) || -1
+    const board_id = Number(ctx.match[1])
     const state = addPrevScene(ctx)
 
-    console.log('state onGetDetailBoard', ctx.scene.session.state)
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.DETAIL_BOARD,
       { ...state, detail_board: { board_id } },
       'Доска не найдена или доступ к данной доске закрыт',
     )
-    // return await ctx.scene.enter(SCENES.DETAIL_BOARD, { ...state, detail_board: { board_id } })
   }
 }

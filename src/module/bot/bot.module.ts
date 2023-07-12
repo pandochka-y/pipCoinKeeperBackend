@@ -28,6 +28,7 @@ import { RemoveBoardUserScene } from './scenes/detail-board/board-management/rem
 import { CategoryManagementScene } from './scenes/detail-board/board-management/category-management/index.scene'
 import { CreateCategoryScene } from './scenes/detail-board/board-management/category-management/create-category.scene'
 import { CategoryListScene } from './scenes/detail-board/board-management/category-management/category-list.scene'
+import { DetailCategoryScene } from './scenes/detail-board/board-management/category-management/detail-category.scene'
 
 @Module({
   providers: [
@@ -47,6 +48,7 @@ import { CategoryListScene } from './scenes/detail-board/board-management/catego
     CategoryManagementScene,
     CreateCategoryScene,
     CategoryListScene,
+    DetailCategoryScene,
   ],
 
   imports: [

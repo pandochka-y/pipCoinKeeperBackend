@@ -40,7 +40,7 @@ export class BoardUsersScene {
   async onRemoveBoardUser(ctx: MyContext) {
     const user_id = await this.botService.getUserId(ctx)
     const state = getState(ctx)
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.REMOVE_BOARD_USER,
       state,

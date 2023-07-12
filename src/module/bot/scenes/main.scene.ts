@@ -11,7 +11,7 @@ import { OPERATIONS, canActivate } from '../bot.guards'
 import { addPrevScene, replyToMessage } from '../bot.utils'
 
 @Scene(SCENES.DETAIL_BOARD)
-export class DetailBoardScene {
+export class MainScene {
   constructor(
     private readonly botService: BotService,
     private readonly boardUsersService: BoardUsersService,
@@ -43,9 +43,7 @@ export class DetailBoardScene {
   async onReportAction(@Ctx() ctx: MyContext) {
     console.log('state onReportAction', ctx.scene.session.state)
     const state = addPrevScene(ctx)
-    // FIXME: when changed state, will change ctx
-    state.detail_board.board_id = 21
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.BOARD_REPORT,
       state,
@@ -70,7 +68,6 @@ export class DetailBoardScene {
 
   @Action(COMMANDS.BOARD_MANAGEMENT)
   async onBoardManagementAction(@Ctx() ctx: MyContext) {
-    // TODO: add on prev scene action
     await ctx.scene.enter(SCENES.BOARD_MANAGEMENT, ctx.scene.session.state)
   }
 }

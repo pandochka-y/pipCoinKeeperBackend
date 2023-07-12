@@ -36,7 +36,7 @@ export class CategoryManagementScene {
   @Action(COMMANDS.CREATE_CATEGORY)
   async onCreateCategory(ctx: MyContext) {
     const state = addPrevScene(ctx)
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.CREATE_CATEGORY,
       state,
@@ -47,7 +47,8 @@ export class CategoryManagementScene {
   @Action(COMMANDS.CATEGORY_LIST)
   async onCategoryList(ctx: MyContext) {
     const state = addPrevScene(ctx)
-    await this.botService.guardEnterBoardScene(
+    state.current_page = 1
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.CATEGORY_LIST,
       state,

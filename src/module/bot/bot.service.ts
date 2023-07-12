@@ -90,24 +90,23 @@ export class BotService {
     return canActivate(boardUser.role.name, action)
   }
 
-  async guardEnterBoardScene(ctx: MyContext, scene: valueOf<typeof SCENES>, initialState: MySession['state'], errorMsg = 'У вас нет прав для просмотра') {
+  async guardEnterScene(ctx: MyContext, scene: valueOf<typeof SCENES>, initialState: MySession['state'], errorMsg = 'У вас нет прав для просмотра') {
     let boardUser: BoardUser | null = null
     const user_id = await this.getUserId(ctx)
-    const board_id = initialState.detail_board.board_id
+    const board_id = initialState?.detail_board?.board_id
 
-    console.log('state guardEnterScene', ctx.scene.session.state)
     if (board_id)
       boardUser = await this.boardUserService.getBoardUserByBoardAndUserId(board_id, user_id)
 
     if (!boardUser) {
       await messageAccessDenied(ctx, errorMsg)
-      return false
+      return
     }
 
     ctx.session.current_scene = scene
     initialState.detail_board.roleName = boardUser.role.name
     initialState.detail_board.board_user_id = boardUser.id
-    console.log('enter scene', scene)
+    console.log('state guardEnterScene', ctx.scene.session.state)
     ctx.scene.enter(scene, initialState)
   }
 }

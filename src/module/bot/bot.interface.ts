@@ -15,7 +15,7 @@ export interface MyContext extends BaseContext {
 
 export interface MySession extends Scenes.WizardSessionData {
 
-  // FIXME: think about structure, learn about state of the session
+  // TODO: think about structure, learn about state of the session
   state: {
     prevScene?: string[]
     detail_board?: {
@@ -24,6 +24,7 @@ export interface MySession extends Scenes.WizardSessionData {
       roleName?: string
     }
     current_page?: number
+    category_id?: number
   }
   create?: {
     board: {

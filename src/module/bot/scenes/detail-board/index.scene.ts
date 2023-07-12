@@ -42,7 +42,7 @@ export class DetailBoardScene {
   async onReportAction(@Ctx() ctx: MyContext) {
     const state = addPrevScene(ctx)
 
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.BOARD_REPORT,
       state,
@@ -69,7 +69,7 @@ export class DetailBoardScene {
   async onBoardManagementAction(@Ctx() ctx: MyContext) {
     const state = addPrevScene(ctx)
 
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.BOARD_MANAGEMENT,
       state,

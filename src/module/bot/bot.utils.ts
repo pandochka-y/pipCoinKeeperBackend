@@ -50,7 +50,6 @@ export function addPrevScene(ctx: MyContext) {
 }
 
 export function backToPrevScene(ctx: MyContext) {
-  // FIXME: double check current scene from old message
   const state = getState(ctx)
   const prevScene = state.prevScene ? state.prevScene?.pop() : null
 
@@ -66,30 +65,30 @@ export function getButtonList<T>(
 
 export type valueOf<T> = T[keyof T]
 
-export function _getCurrentPage(ctx: MyContext, scene: valueOf<typeof SCENES>) {
-  const state = getState(ctx)
-  const currentScene = ctx.session?.current_scene
-  const currentPage = scene === currentScene ? state?.current_page : 1
-  return currentPage || 1
-}
+// export function _getCurrentPage(ctx: MyContext, scene: valueOf<typeof SCENES>) {
+//   const state = getState(ctx)
+//   const currentScene = ctx.session?.current_scene
+//   const currentPage = scene === currentScene ? state?.current_page : 1
+//   return currentPage || 1
+// }
 
 // function _setPagesLimit(limit: number)
 
-export function getInfoNavigation(ctx: MyContext, scene: valueOf<typeof SCENES>) {
-  let shouldPrev = false
-  const shouldNext = false
-  const test = () => shouldPrev
-  const currentPage = _getCurrentPage(ctx, scene)
-  // const { limit } = NAVIGATIONS_RULES(scene)
-  const limit = 10
-
-  function getCountPages(countItems: number) {
-    shouldPrev = true
-    const countPages = Math.ceil(countItems / limit)
-  }
-
-  return { currentPage, limit, getCountPages, test }
-}
+// export function getInfoNavigation(ctx: MyContext, scene: valueOf<typeof SCENES>) {
+//   let shouldPrev = false
+//   const shouldNext = false
+//   const test = () => shouldPrev
+//   const currentPage = _getCurrentPage(ctx, scene)
+//   // const { limit } = NAVIGATIONS_RULES(scene)
+//   const limit = 10
+//
+//   function getCountPages(countItems: number) {
+//     shouldPrev = true
+//     const countPages = Math.ceil(countItems / limit)
+//   }
+//
+//   return { currentPage, limit, getCountPages, test }
+// }
 
 export class Pagination {
   currentPage: number
@@ -124,7 +123,6 @@ export class Pagination {
     const currentScene = this.ctx.session?.current_scene
     const currentPage = this.scene === currentScene ? state?.current_page : 1
     state.current_page = currentPage || 1
-    console.log('currentPage', currentPage)
     this.currentPage = state.current_page
   }
 
@@ -139,7 +137,6 @@ export class Pagination {
 
   private setCountPages() {
     this.countPages = Math.ceil(this.countItems / this.dto.limit)
-    console.log('this.countPages', this.countPages, this.countItems)
     this.refreshNavigation()
   }
 

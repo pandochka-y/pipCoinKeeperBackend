@@ -37,7 +37,7 @@ export class BoardManagementScene {
   @Action(COMMANDS.BOARD_USERS)
   async onBoardUsers(ctx: MyContext) {
     const state = addPrevScene(ctx)
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.BOARD_USERS,
       state,
@@ -48,7 +48,7 @@ export class BoardManagementScene {
   @Action(COMMANDS.CATEGORY_MANAGEMENT)
   async onCategoryManagement(ctx: MyContext) {
     const state = addPrevScene(ctx)
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.CATEGORY_MANAGEMENT,
       state,
@@ -61,7 +61,7 @@ export class BoardManagementScene {
     const user_id = await this.botService.getUserId(ctx)
     await this.userService.removeActiveBoard(user_id)
     const state = getState(ctx)
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.BOARD_MANAGEMENT,
       state,
@@ -76,7 +76,7 @@ export class BoardManagementScene {
     await this.userService.setActiveBoard(user_id, board_id)
     const state = getState(ctx)
 
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.BOARD_MANAGEMENT,
       state,

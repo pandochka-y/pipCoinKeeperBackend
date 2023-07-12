@@ -4,11 +4,10 @@ import { Markup } from 'telegraf'
 import { MyContext } from '../../../../bot.interface'
 import { BotService } from '../../../../bot.service'
 import { BUTTONS, COMMANDS, SCENES } from '../../../../bot.constants'
-import { Pagination, addPrevScene, getButtonList, replyToMessage } from '../../../../bot.utils'
+import { Pagination, addPrevScene, getButtonList, getState, replyToMessage } from '../../../../bot.utils'
 import { BoardService } from '../../../../../board/board.service'
 import { CategoriesService } from '../../../../../categories/categories.service'
 
-// TODO: detail category
 @Scene(SCENES.CATEGORY_LIST)
 export class CategoryListScene {
   constructor(
@@ -20,7 +19,7 @@ export class CategoryListScene {
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
     const pagination = new Pagination(ctx, SCENES.CATEGORY_LIST, { limit: 3 })
-    ctx.session.current_scene = SCENES.BOARD_LIST
+    ctx.session.current_scene = SCENES.CATEGORY_LIST
     const user_id = await this.botService.getUserId(ctx)
     const board_id = this.botService.getBoardId(ctx)
 
@@ -34,15 +33,15 @@ export class CategoryListScene {
     ]
 
     const inlineKeyboard = Markup.inlineKeyboard(buttons)
-    await replyToMessage(ctx, `Категории доски: ${board_id}\n ${pagination.currentPage}/${pagination.countPages}`, inlineKeyboard)
+    await replyToMessage(ctx, `Категории доски: ${board_id}\nКол-во: ${categories.count}\n${pagination.currentPage}/${pagination.countPages}`, inlineKeyboard)
   }
 
   @Action(COMMANDS.NEXT_PAGE)
   async onNextPage(ctx: MyContext) {
-    const state = addPrevScene(ctx)
+    const state = getState(ctx)
     state.current_page += 1
     console.log('state', state)
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.CATEGORY_LIST,
       state,
@@ -52,10 +51,10 @@ export class CategoryListScene {
 
   @Action(COMMANDS.PREV_PAGE)
   async onPrevPage(ctx: MyContext) {
-    const state = addPrevScene(ctx)
+    const state = getState(ctx)
     if (state.current_page > 1)
       state.current_page -= 1
-    await this.botService.guardEnterBoardScene(
+    await this.botService.guardEnterScene(
       ctx,
       SCENES.CATEGORY_LIST,
       state,
@@ -63,8 +62,17 @@ export class CategoryListScene {
     )
   }
 
-  @Action(COMMANDS.CREATE_BOARD)
-  async onCreateBoard(ctx: MyContext) {
-    await ctx.scene.enter(SCENES.CREATE_BOARD)
+  // TODO: detail category
+  @Action(COMMANDS.TO_DETAIL_CATEGORY_REGEX)
+  async onToDetailCategory(ctx: MyContext) {
+    const category_id = Number(ctx.match[1]) || -1
+    const state = addPrevScene(ctx)
+    state.category_id = category_id
+    await this.botService.guardEnterScene(
+      ctx,
+      SCENES.DETAIL_CATEGORY,
+      state,
+      'У вас нет прав для просмотра категорий',
+    )
   }
 }

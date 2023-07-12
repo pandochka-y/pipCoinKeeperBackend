@@ -15,6 +15,7 @@ export const COMMANDS = {
 
   BOARD_LIST: 'boards',
   TO_DETAIL_BOARD: (id: number) => `detail-board ${id}`,
+  TO_DETAIL_BOARD_REGEX: /detail-board\s(.*)/,
   CREATE_BOARD: 'create_board',
 
   BOARD_MANAGEMENT: 'board_management',
@@ -37,6 +38,7 @@ export const COMMANDS = {
   REMOVE_CATEGORY: 'remove_category',
   CATEGORY_LIST: 'list_categories',
   TO_DETAIL_CATEGORY: (id: number) => `detail-category ${id}`,
+  TO_DETAIL_CATEGORY_REGEX: /detail-category\s(.*)/,
 
   ADD_TO_FAVORITE: 'add_to_favorite',
   REMOVE_FROM_FAVORITE: 'remove_from_favorite',
@@ -126,6 +128,7 @@ export const BUTTONS = {
   // Category
   CREATE_CATEGORY: (shouldShow = false) => Markup.button.callback('➕ Добавить категорию', COMMANDS.CREATE_CATEGORY, !shouldShow),
   CATEGORY_MANAGEMENT: (shouldShow = false) => Markup.button.callback('📝 Категории', COMMANDS.CATEGORY_MANAGEMENT, !shouldShow),
+  test: (shouldShow = false) => Markup.button.callback('📝 TEST', 'test', !shouldShow),
   REMOVE_CATEGORY: (shouldShow = false) => Markup.button.callback('❌ Удалить категорию', COMMANDS.REMOVE_CATEGORY, !shouldShow),
   CATEGORY_LIST: (shouldShow = false) => Markup.button.callback('📋 Список категорий', COMMANDS.CATEGORY_LIST, !shouldShow),
   TO_DETAIL_CATEGORY: (category: Category) => Markup.button.callback(`📋 Категория ${category.name}`, COMMANDS.TO_DETAIL_CATEGORY(category.id)),

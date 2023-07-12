@@ -18,6 +18,10 @@ export class CategoriesService {
     return await this.categoryService.create({ name: dto.name, board_id: dto.board_id })
   }
 
+  async getCategoryById(id: number) {
+    return await this.categoryService.findByPk(id)
+  }
+
   async getAllBoardCategories(dto: GetCategoryListDto) {
     console.log('dto', dto)
     return await this.categoryService.findAndCountAll({
