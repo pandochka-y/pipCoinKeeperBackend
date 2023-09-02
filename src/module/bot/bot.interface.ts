@@ -25,6 +25,7 @@ export interface MySession extends Scenes.WizardSessionData {
     }
     current_page?: number
     category_id?: number
+    action?: string
   }
   create?: {
     board: {

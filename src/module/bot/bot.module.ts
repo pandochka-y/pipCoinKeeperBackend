@@ -29,6 +29,7 @@ import { CategoryManagementScene } from './scenes/detail-board/board-management/
 import { CreateCategoryScene } from './scenes/detail-board/board-management/category-management/create-category.scene'
 import { CategoryListScene } from './scenes/detail-board/board-management/category-management/category-list.scene'
 import { DetailCategoryScene } from './scenes/detail-board/board-management/category-management/detail-category.scene'
+import { EditCategoryScene } from './scenes/detail-board/board-management/category-management/edit-category.scene'
 
 @Module({
   providers: [
@@ -49,6 +50,7 @@ import { DetailCategoryScene } from './scenes/detail-board/board-management/cate
     CreateCategoryScene,
     CategoryListScene,
     DetailCategoryScene,
+    EditCategoryScene,
   ],
 
   imports: [

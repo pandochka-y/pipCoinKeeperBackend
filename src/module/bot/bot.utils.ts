@@ -19,6 +19,7 @@ export async function replyToMessage(
   ctx: MyContext,
   text: string,
   extra: ExtraEditMessageText,
+  newMessage = false,
 ) {
   const messageId = ctx.update.callback_query?.message.message_id || ctx.session.messageId
   /*
@@ -27,7 +28,7 @@ export async function replyToMessage(
   * if on action "onBackAction", current scene is not changed, and message is not modified
   */
   try {
-    if (messageId && extra.reply_markup)
+    if (messageId && extra.reply_markup && !newMessage)
       return await ctx.editMessageText(text, extra)
   }
   catch (e) {
@@ -35,6 +36,11 @@ export async function replyToMessage(
   }
   const reply = await ctx.replyWithMarkdownV2(text, extra)
   ctx.session.messageId = reply.message_id
+}
+
+export async function deleteMessage(ctx: MyContext, message = 'Отменено') {
+  await ctx.answerCbQuery(message)
+  await ctx.deleteMessage(ctx.session.messageId)
 }
 
 export function getState(ctx: MyContext): MySession['state'] {

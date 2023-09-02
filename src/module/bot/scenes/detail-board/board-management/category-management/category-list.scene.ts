@@ -54,6 +54,7 @@ export class CategoryListScene {
     const state = getState(ctx)
     if (state.current_page > 1)
       state.current_page -= 1
+
     await this.botService.guardEnterScene(
       ctx,
       SCENES.CATEGORY_LIST,

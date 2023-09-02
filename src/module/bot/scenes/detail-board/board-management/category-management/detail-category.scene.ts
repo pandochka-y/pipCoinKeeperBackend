@@ -15,7 +15,7 @@ export class DetailCategoryScene {
     private readonly categoriesService: CategoriesService,
   ) {}
 
-  // TODO: detail delete/change category
+  // TODO: detail delete/edit category
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
     const { category_id } = getState(ctx)
@@ -27,23 +27,12 @@ export class DetailCategoryScene {
     }
 
     const button = [
-      [BUTTONS.test(true)],
+      [BUTTONS.EDIT_CATEGORY(true)],
       [BUTTONS.BACK(), BUTTONS.MAIN_MENU],
     ]
     const inlineKeyboard = Markup.inlineKeyboard(button)
 
     await replyToMessage(ctx, `Категория: ${category.name}`, inlineKeyboard)
-  }
-
-  // TODO: check promise answer for remove boilerplate
-  @Action('test')
-  async test(ctx: MyContext) {
-    const button = [
-      [BUTTONS.test(true)],
-    ]
-    const inlineKeyboard = Markup.inlineKeyboard(button)
-    await ctx.reply('waiting')
-    // await ctx.replyWithQuiz('wqe', ['test'], button)
   }
 
   @Action(COMMANDS.CREATE_CATEGORY)
@@ -54,6 +43,17 @@ export class DetailCategoryScene {
       SCENES.CREATE_CATEGORY,
       state,
       'У вас нет прав для создания категории',
+    )
+  }
+
+  @Action(COMMANDS.EDIT)
+  async onEditCategory(ctx: MyContext) {
+    const state = addPrevScene(ctx)
+    await this.botService.guardEnterScene(
+      ctx,
+      SCENES.EDIT_CATEGORY,
+      state,
+      'У вас нет прав для редактирования категории',
     )
   }
 }

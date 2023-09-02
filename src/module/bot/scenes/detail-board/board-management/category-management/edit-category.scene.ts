@@ -1,21 +1,21 @@
-import { Action, Scene, SceneEnter } from 'nestjs-telegraf'
+import { Action, On, Scene, SceneEnter } from 'nestjs-telegraf'
 import { Markup } from 'telegraf'
 
 import { BotService } from '../../../../bot.service'
 import { MyContext } from '../../../../bot.interface'
 import { BUTTONS, COMMANDS, SCENES } from '../../../../bot.constants'
-import { addPrevScene, getState, replyToMessage } from '../../../../bot.utils'
+import { deleteMessage, getState, replyToMessage } from '../../../../bot.utils'
 import { CategoriesService } from '../../../../../categories/categories.service'
 import { messageAccessDenied } from '../../../../bot.guards'
 
 @Scene(SCENES.EDIT_CATEGORY)
-export class DetailEditCategoryScene {
+export class EditCategoryScene {
   constructor(
     private readonly botService: BotService,
     private readonly categoriesService: CategoriesService,
   ) {}
 
-  // TODO: detail delete/edit category
+  // TODO: edit category
   @SceneEnter()
   async onSceneEnter(ctx: MyContext) {
     const { category_id } = getState(ctx)
@@ -37,14 +37,54 @@ export class DetailEditCategoryScene {
     await replyToMessage(ctx, `Категория: ${category.name}`, inlineKeyboard)
   }
 
-  @Action(COMMANDS.EDIT)
-  async onEditCategory(ctx: MyContext) {
-    const state = addPrevScene(ctx)
-    await this.botService.guardEnterScene(
-      ctx,
-      SCENES.EDIT_CATEGORY,
-      state,
-      'У вас нет прав для редактирования категории',
-    )
+  @Action(COMMANDS.EDIT_CATEGORY_NAME)
+  async onEditCategoryName(ctx: MyContext) {
+    const state = getState(ctx)
+    state.action = COMMANDS.EDIT_CATEGORY_NAME
+    const button = [
+      BUTTONS.CANCEL,
+    ]
+    const inlineKeyboard = Markup.inlineKeyboard(button)
+    await replyToMessage(ctx, 'Введите новое название категории:', inlineKeyboard, true)
+  }
+
+  @Action(COMMANDS.EDIT_CATEGORY_MCC)
+  async onEditCategoryMCC(ctx: MyContext) {
+    const state = getState(ctx)
+    state.action = COMMANDS.EDIT_CATEGORY_MCC
+    const button = [
+      BUTTONS.CANCEL,
+    ]
+    const inlineKeyboard = Markup.inlineKeyboard(button)
+    await replyToMessage(ctx, 'Введите новый mcc:', inlineKeyboard, true)
+    // await ctx.reply('Введите новый mcc:')
+  }
+
+  @Action(COMMANDS.EDIT_CATEGORY_LIMIT)
+  async onEditCategoryLimit(ctx: MyContext) {
+    const state = getState(ctx)
+    state.action = COMMANDS.EDIT_CATEGORY_LIMIT
+    const button = [
+      BUTTONS.CANCEL,
+    ]
+    const inlineKeyboard = Markup.inlineKeyboard(button)
+    await replyToMessage(ctx, 'Введите новый лимит:', inlineKeyboard, true)
+  }
+
+  @Action(COMMANDS.CANCEL)
+  async onCancel(ctx: MyContext) {
+    const state = getState(ctx)
+    state.action = undefined
+    return await deleteMessage(ctx)
+  }
+
+  @On(['message'])
+  async onText(ctx: MyContext) {
+    console.log(ctx)
+    const state = getState(ctx)
+    if (!state.action)
+      return
+    await ctx.reply(`ответ принят ${state.action}`)
+    state.action = undefined
   }
 }

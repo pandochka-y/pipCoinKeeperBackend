@@ -12,6 +12,9 @@ export const COMMANDS = {
   MAIN_MENU: 'main',
   MAIN_SETTINGS: 'main_settings',
   BACK: 'back',
+  EDIT: 'edit',
+  DELETE: 'delete',
+  CANCEL: 'cancel',
 
   BOARD_LIST: 'boards',
   TO_DETAIL_BOARD: (id: number) => `detail-board ${id}`,
@@ -39,6 +42,9 @@ export const COMMANDS = {
   CATEGORY_LIST: 'list_categories',
   TO_DETAIL_CATEGORY: (id: number) => `detail-category ${id}`,
   TO_DETAIL_CATEGORY_REGEX: /detail-category\s(.*)/,
+  EDIT_CATEGORY_NAME: 'edit_category_name',
+  EDIT_CATEGORY_MCC: 'edit_category_mcc',
+  EDIT_CATEGORY_LIMIT: 'edit_category_limit',
 
   ADD_TO_FAVORITE: 'add_to_favorite',
   REMOVE_FROM_FAVORITE: 'remove_from_favorite',
@@ -68,6 +74,7 @@ export const SCENES = {
   CATEGORY_LIST: 'list_categories',
   REMOVE_CATEGORY: 'remove_category',
   DETAIL_CATEGORY: 'detail_category',
+  EDIT_CATEGORY: 'edit_category',
 }
 
 // const NAVIGATION_RULES = {
@@ -102,6 +109,7 @@ export const BUTTONS = {
   OK: Markup.button.callback('✅', COMMANDS.OK),
   CONTINUE: Markup.button.callback('➡️ Продолжить', COMMANDS.CONTINUE),
   BACK: (value = 'Назад') => Markup.button.callback(`⬅ ${value}`, COMMANDS.BACK),
+  CANCEL: Markup.button.callback('❌ Отмена', COMMANDS.CANCEL),
 
   // Board
   CREATE_BOARD: Markup.button.callback('+ Создать доску', COMMANDS.CREATE_BOARD),
@@ -132,6 +140,10 @@ export const BUTTONS = {
   REMOVE_CATEGORY: (shouldShow = false) => Markup.button.callback('❌ Удалить категорию', COMMANDS.REMOVE_CATEGORY, !shouldShow),
   CATEGORY_LIST: (shouldShow = false) => Markup.button.callback('📋 Список категорий', COMMANDS.CATEGORY_LIST, !shouldShow),
   TO_DETAIL_CATEGORY: (category: Category) => Markup.button.callback(`📋 Категория ${category.name}`, COMMANDS.TO_DETAIL_CATEGORY(category.id)),
+  EDIT_CATEGORY: (shouldShow = false) => Markup.button.callback('📝 Редактировать категорию', COMMANDS.EDIT, !shouldShow),
+  EDIT_CATEGORY_NAME: (shouldShow = false) => Markup.button.callback('📝 Изменить название категории', COMMANDS.EDIT_CATEGORY_NAME, !shouldShow),
+  EDIT_CATEGORY_MCC: (shouldShow = false) => Markup.button.callback('📝 Изменить mcc категории', COMMANDS.EDIT_CATEGORY_MCC, !shouldShow),
+  EDIT_CATEGORY_LIMIT: (shouldShow = false) => Markup.button.callback('📝 Изменить лимит категории', COMMANDS.EDIT_CATEGORY_LIMIT, !shouldShow),
 
   // Board users
   BOARD_USERS: (shouldShow = false) => Markup.button.callback('👨‍🔧 Участники', COMMANDS.BOARD_USERS, !shouldShow),
